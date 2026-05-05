@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Penny Wise — Life Sim</title>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <!-- CSS: order matters — variables first -->
+  <link rel="stylesheet" href="variables.css">
+  <link rel="stylesheet" href="layout.css">
+  <link rel="stylesheet" href="components.css">
+  <link rel="stylesheet" href="hud.css">
+  <link rel="stylesheet" href="bills.css">
+</head>
+<body>
+  <div class="screen">
+
+    <!--  TOP BAR  -->
+    <div class="topbar">
+      <div class="date-badge">
+        <div class="month">MAR 2026</div>
+        <div class="day">DAY 14 / 30</div>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-icon">♥</div>
+          <div class="stat-body">
+            <div class="stat-label">HAPPY</div>
+            <div class="bar happy"><span style="width: 72%"></span></div>
+          </div>
+        </div>
+        <div class="stat">
+          <div class="stat-icon">⚡</div>
+          <div class="stat-body">
+            <div class="stat-label">ENERGY</div>
+            <div class="bar energy"><span style="width: 45%"></span></div>
+          </div>
+        </div>
+        <div class="stat">
+          <div class="stat-icon">☠</div>
+          <div class="stat-body">
+            <div class="stat-label">STRESS</div>
+            <div class="bar stress"><span style="width: 60%"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wallet">
+        <div class="coin"></div>
+        <div>
+          <div class="amount">£ 1,247</div>
+          <div class="sub">+£2,100 payday in 16d</div>
+        </div>
+      </div>
+    </div>
+
+    <!--  VIEW: HOME  -->
+    <div id="view-home" class="view active">
+      <div class="world">
+        <div class="cloud c1"></div>
+        <div class="cloud c2"></div>
+
+        <div class="room">
+          <div class="floor"></div>
+          <div class="wall-back"></div>
+          <div class="rug furn"></div>
+          <div class="bed furn"></div>
+          <div class="couch furn"></div>
+          <div class="tv furn"></div>
+          <div class="lamp furn"></div>
+          <div class="plant furn"></div>
+        </div>
+
+        <div class="hero">
+          <div class="hair"></div>
+          <div class="head"></div>
+          <div class="body"></div>
+          <div class="legs"></div>
+        </div>
+
+        <div class="bubble">RENT DUE IN 3 DAYS!</div>
+      </div>
+
+      <aside class="sidebar">
+        <div class="sb-title">★ MONTH BUDGET ★</div>
+        <div class="panel">
+          <div class="budget-row income"><span class="lbl">Salary</span><span class="val">+2100</span></div>
+          <div class="budget-row expense"><span class="lbl">Rent</span><span class="val">-850</span></div>
+          <div class="budget-row expense"><span class="lbl">Groceries</span><span class="val">-240</span></div>
+          <div class="budget-row expense"><span class="lbl">Utilities</span><span class="val">-95</span></div>
+          <div class="budget-row expense"><span class="lbl">Subs</span><span class="val">-42</span></div>
+          <div class="budget-row save"><span class="lbl">Savings</span><span class="val">+150</span></div>
+        </div>
+
+        <div class="sb-title">◆ QUICK ACT ◆</div>
+        <div class="actions">
+          <button class="btn">SLEEP</button>
+          <button class="btn">WORK</button>
+          <button class="btn">EAT</button>
+          <button class="btn">RELAX</button>
+        </div>
+      </aside>
+    </div>
+
+    <!--  VIEW: BILLS  -->
+    <div id="view-bills" class="view">
+      <!-- Summary strip -->
+      <div class="bills-summary">
+        <div class="sum-card due">
+          <div class="ico">⚠</div>
+          <div>
+            <div class="lbl">OVERDUE</div>
+            <div class="val">£ 85</div>
+          </div>
+        </div>
+        <div class="sum-card upcoming">
+          <div class="ico">⏰</div>
+          <div>
+            <div class="lbl">UPCOMING</div>
+            <div class="val">£ 987</div>
+          </div>
+        </div>
+        <div class="sum-card paid">
+          <div class="ico">✓</div>
+          <div>
+            <div class="lbl">PAID THIS MO.</div>
+            <div class="val">£ 155</div>
+          </div>
+        </div>
+        <div class="sum-card total">
+          <div class="ico">Σ</div>
+          <div>
+            <div class="lbl">MONTHLY TOTAL</div>
+            <div class="val">£ 1,227</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bills list -->
+      <div class="bills-list">
+        <div class="section-label">▶ OVERDUE ◀</div>
+
+        <div class="bill overdue">
+          <div class="bill-icon elec">⚡</div>
+          <div class="bill-info">
+            <div class="name">ELECTRICITY</div>
+            <div class="meta"><span class="tag">UTILITY</span> Due Mar 12 — late fees risk!</div>
+          </div>
+          <div class="bill-due"><div>DUE</div><div class="days">-2 DAYS</div></div>
+          <div class="bill-amount">£ 85</div>
+          <div class="bill-actions">
+            <button class="btn-pay">PAY NOW</button>
+          </div>
+        </div>
+
+        <div class="section-label upcoming">▶ UPCOMING ◀</div>
+
+        <div class="bill">
+          <div class="bill-icon rent">🏠</div>
+          <div class="bill-info">
+            <div class="name">RENT</div>
+            <div class="meta"><span class="tag">HOUSING</span> Landlord — monthly</div>
+          </div>
+          <div class="bill-due"><div>DUE</div><div class="days warn-days">3 DAYS</div></div>
+          <div class="bill-amount">£ 850</div>
+          <div class="bill-actions">
+            <button class="btn-pay">PAY</button>
+          </div>
+        </div>
+
+        <div class="bill">
+          <div class="bill-icon water">💧</div>
+          <div class="bill-info">
+            <div class="name">WATER</div>
+            <div class="meta"><span class="tag">UTILITY</span> Quarterly bill</div>
+          </div>
+          <div class="bill-due"><div>DUE</div><div class="days">8 DAYS</div></div>
+          <div class="bill-amount">£ 52</div>
+          <div class="bill-actions">
+            <button class="btn-pay">PAY</button>
+          </div>
+        </div>
+
+        <div class="bill">
+          <div class="bill-icon net">📡</div>
+          <div class="bill-info">
+            <div class="name">INTERNET</div>
+            <div class="meta"><span class="tag">UTILITY</span> Fibre 500Mbps</div>
+          </div>
+          <div class="bill-due"><div>DUE</div><div class="days">12 DAYS</div></div>
+          <div class="bill-amount">£ 35</div>
+          <div class="bill-actions">
+            <button class="btn-pay">PAY</button>
+          </div>
+        </div>
+
+        <div class="bill">
+          <div class="bill-icon phone">📱</div>
+          <div class="bill-info">
+            <div class="name">PHONE PLAN</div>
+            <div class="meta"><span class="tag">UTILITY</span> Unlimited data</div>
+          </div>
+          <div class="bill-due"><div>DUE</div><div class="days">15 DAYS</div></div>
+          <div class="bill-amount">£ 25</div>
+          <div class="bill-actions">
+            <button class="btn-pay">PAY</button>
+          </div>
+        </div>
+
+        <div class="bill">
+          <div class="bill-icon stream">🎬</div>
+          <div class="bill-info">
+            <div class="name">STREAMFLIX</div>
+            <div class="meta"><span class="tag">SUB</span> Premium — used 4d this month</div>
+          </div>
+          <div class="bill-due"><div>DUE</div><div class="days">18 DAYS</div></div>
+          <div class="bill-amount">£ 15</div>
+          <div class="bill-actions">
+            <button class="btn-pay">PAY</button>
+            <button class="btn-cancel">CANCEL</button>
+          </div>
+        </div>
+
+        <div class="bill">
+          <div class="bill-icon gym">💪</div>
+          <div class="bill-info">
+            <div class="name">GYM MEMBER</div>
+            <div class="meta"><span class="tag">SUB</span> Visited 1x in 30 days ⚠</div>
+          </div>
+          <div class="bill-due"><div>DUE</div><div class="days">20 DAYS</div></div>
+          <div class="bill-amount">£ 22</div>
+          <div class="bill-actions">
+            <button class="btn-pay">PAY</button>
+            <button class="btn-cancel">CANCEL</button>
+          </div>
+        </div>
+
+        <div class="section-label paid">▶ PAID ◀</div>
+
+        <div class="bill is-paid">
+          <div class="bill-icon music">🎵</div>
+          <div class="bill-info">
+            <div class="name">TUNEBOX</div>
+            <div class="meta"><span class="tag">SUB</span> Paid Mar 3</div>
+          </div>
+          <div class="bill-amount">£ 10</div>
+          <div class="paid-stamp">PAID ✓</div>
+        </div>
+      </div>
+
+      <!-- Bills sidebar -->
+      <aside class="sidebar">
+        <div class="sb-title">⚙ AUTOPAY ⚙</div>
+        <div class="panel">
+          <div class="toggle-row"><span>Rent</span><div class="toggle on"></div></div>
+          <div class="toggle-row"><span>Utilities</span><div class="toggle"></div></div>
+          <div class="toggle-row"><span>Streamflix</span><div class="toggle on"></div></div>
+          <div class="toggle-row"><span>Gym</span><div class="toggle on"></div></div>
+          <div class="toggle-row"><span>Tunebox</span><div class="toggle on"></div></div>
+        </div>
+
+        <div class="sb-title">💡 TIP 💡</div>
+        <div class="panel">
+          <div class="tip-text">
+            <span class="hl">GYM</span> only used once this month. Cancelling saves <span class="hl">£22/mo</span> = <span class="hl">£264/yr</span>.
+          </div>
+        </div>
+
+        <button class="pay-all">PAY ALL<br>£ 1,084</button>
+      </aside>
+    </div>
+
+    <!--  BOTTOM BAR  -->
+    <div class="bottombar">
+      <div class="action-tab active" data-view="view-home">
+        <div class="ico">🏠</div>
+        <div class="lbl">HOME</div>
+      </div>
+      <div class="action-tab" data-view="view-bills">
+        <div class="ico">💳</div>
+        <div class="lbl">BILLS</div>
+        <div class="notif">2</div>
+      </div>
+      <div class="action-tab" data-view="view-shop">
+        <div class="ico">🛒</div>
+        <div class="lbl">SHOP</div>
+      </div>
+      <div class="action-tab" data-view="view-job">
+        <div class="ico">💼</div>
+        <div class="lbl">JOB</div>
+      </div>
+      <div class="action-tab" data-view="view-bank">
+        <div class="ico">🏦</div>
+        <div class="lbl">BANK</div>
+      </div>
+      <div class="action-tab" data-view="view-stats">
+        <div class="ico">📊</div>
+        <div class="lbl">STATS</div>
+      </div>
+      <button class="end-day">END DAY ▶</button>
+    </div>
+
+  </div>
+
+  <!-- JS: game state first, then nav -->
+  <script src="js/game.js"></script>
+  <script src="js/nav.js"></script>
+</body>
+</html>

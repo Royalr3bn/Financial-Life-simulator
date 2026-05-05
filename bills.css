@@ -1,0 +1,219 @@
+/* 
+   PENNY WISE — Bills View
+   Bill cards, summary, autopay, tips
+    */
+
+/*  Bills view layout  */
+#view-bills {
+  grid-template-columns: 1fr 240px;
+}
+
+/*  Summary strip  */
+.bills-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 12px 16px;
+  background: #150c1f;
+  border-bottom: 3px solid var(--panel-edge);
+  grid-column: 1 / -1;
+}
+.sum-card {
+  background: var(--panel);
+  border: 3px solid var(--panel-edge);
+  padding: 8px 12px;
+  box-shadow: inset -2px -2px 0 rgba(0,0,0,0.4), inset 2px 2px 0 rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sum-card .ico {
+  width: 34px; height: 34px;
+  display: grid; place-items: center;
+  background: var(--bg-0);
+  border: 2px solid var(--panel-edge);
+  font-size: 20px;
+}
+.sum-card .lbl {
+  font-family: var(--font-pixel);
+  font-size: 7px;
+  color: var(--ink-dim);
+  letter-spacing: 1px;
+}
+.sum-card .val {
+  font-family: var(--font-pixel);
+  font-size: 13px;
+  margin-top: 3px;
+}
+.sum-card.due .val { color: var(--red); }
+.sum-card.paid .val { color: var(--green); }
+.sum-card.upcoming .val { color: var(--orange); }
+.sum-card.total .val { color: var(--gold); }
+
+/*  Bills list  */
+.bills-list {
+  padding: 14px 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.bills-list::-webkit-scrollbar { width: 12px; }
+.bills-list::-webkit-scrollbar-track {
+  background: var(--shadow);
+  border: 2px solid var(--panel-edge);
+}
+.bills-list::-webkit-scrollbar-thumb {
+  background: var(--panel-light);
+  border: 2px solid var(--panel-edge);
+}
+
+/*  Individual bill card  */
+.bill {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto auto;
+  gap: 12px;
+  align-items: center;
+  background: var(--panel);
+  border: 3px solid var(--panel-edge);
+  padding: 10px 12px;
+  box-shadow: inset -2px -2px 0 rgba(0,0,0,0.4), inset 2px 2px 0 rgba(255,255,255,0.1);
+  position: relative;
+}
+
+.bill.overdue {
+  border-color: var(--red);
+  animation: pulse-red 1.5s infinite;
+}
+@keyframes pulse-red {
+  0%, 100% { box-shadow: inset -2px -2px 0 rgba(0,0,0,0.4), inset 2px 2px 0 rgba(255,255,255,0.1), 0 0 0 0 rgba(230,57,70,0.5); }
+  50% { box-shadow: inset -2px -2px 0 rgba(0,0,0,0.4), inset 2px 2px 0 rgba(255,255,255,0.1), 0 0 0 3px rgba(230,57,70,0.3); }
+}
+
+.bill.is-paid {
+  opacity: 0.6;
+  background: var(--bg-1);
+}
+
+/* ——— Bill icon ——— */
+.bill-icon {
+  width: 44px; height: 44px;
+  display: grid; place-items: center;
+  background: var(--bg-0);
+  border: 2px solid var(--panel-edge);
+  font-size: 24px;
+}
+.bill-icon.rent { background: linear-gradient(180deg, var(--blue) 0%, var(--blue-deep) 100%); }
+.bill-icon.elec { background: linear-gradient(180deg, var(--gold) 0%, var(--gold-deep) 100%); }
+.bill-icon.water { background: linear-gradient(180deg, var(--blue) 0%, var(--blue-deep) 100%); }
+.bill-icon.net { background: linear-gradient(180deg, #a78bfa 0%, #6d4ec9 100%); }
+.bill-icon.phone { background: linear-gradient(180deg, var(--green) 0%, var(--green-deep) 100%); }
+.bill-icon.stream { background: linear-gradient(180deg, var(--red) 0%, var(--red-deep) 100%); }
+.bill-icon.gym { background: linear-gradient(180deg, var(--orange) 0%, #b8671f 100%); }
+.bill-icon.music { background: linear-gradient(180deg, var(--pink) 0%, #b8547d 100%); }
+
+/* ——— Bill info ——— */
+.bill-info .name {
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  color: var(--ink);
+  margin-bottom: 4px;
+  letter-spacing: 1px;
+}
+.bill-info .meta {
+  font-size: 16px;
+  color: var(--ink-dim);
+}
+.bill-info .meta .tag {
+  display: inline-block;
+  padding: 1px 6px;
+  background: var(--bg-0);
+  border: 1px solid var(--panel-edge);
+  margin-right: 6px;
+  font-size: 14px;
+}
+
+/* ——— Due date ——— */
+.bill-due {
+  font-family: var(--font-pixel);
+  font-size: 8px;
+  color: var(--ink-dim);
+  text-align: right;
+  letter-spacing: 1px;
+}
+.bill-due .days {
+  font-size: 14px;
+  color: var(--ink);
+  margin-top: 4px;
+}
+.bill.overdue .bill-due .days { color: var(--red); }
+.warn-days { color: var(--orange); }
+
+/* ——— Bill amount ——— */
+.bill-amount {
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  color: var(--ink);
+  text-align: right;
+  min-width: 80px;
+}
+.bill.overdue .bill-amount { color: var(--red); }
+
+/* ——— Bill action buttons ——— */
+.bill-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ——— Paid stamp ——— */
+.paid-stamp {
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  color: var(--green);
+  border: 2px dashed var(--green);
+  padding: 6px 10px;
+  letter-spacing: 1px;
+  transform: rotate(-4deg);
+}
+
+/* ——— Toggle rows (autopay) ——— */
+.toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  font-size: 17px;
+  border-bottom: 1px dotted var(--panel-light);
+}
+.toggle-row:last-child { border-bottom: none; }
+
+/* ——— Tip panel ——— */
+.tip-text {
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--ink);
+}
+.tip-text .hl {
+  color: var(--gold);
+  font-family: var(--font-pixel);
+  font-size: 9px;
+}
+
+/* ——— Pay all button ——— */
+.pay-all {
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  padding: 14px;
+  background: linear-gradient(180deg, var(--red) 0%, var(--red-deep) 100%);
+  color: var(--ink);
+  border: 3px solid var(--panel-edge);
+  cursor: pointer;
+  letter-spacing: 2px;
+  box-shadow: inset -2px -2px 0 rgba(0,0,0,0.3), inset 2px 2px 0 rgba(255,255,255,0.2);
+}
+.pay-all:hover {
+  background: linear-gradient(180deg, var(--gold) 0%, var(--gold-deep) 100%);
+  color: var(--bg-0);
+}
+.pay-all:active { transform: translate(1px,1px); }

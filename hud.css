@@ -1,0 +1,186 @@
+/* ═══════════════════════════════════════
+   PENNY WISE — Home View (HUD)
+   Room, character, furniture, clouds
+   ═══════════════════════════════════════ */
+
+/* ——— Home view layout ——— */
+#view-home {
+  grid-template-columns: 1fr 220px;
+}
+
+.world {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, #8bb8d9 0%, #c9a8d4 55%, #7a5588 100%);
+}
+
+/* ——— Isometric room ——— */
+.room {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  transform: translate(-50%, -50%);
+  width: 520px; height: 320px;
+}
+.floor {
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(90deg, #b88a5a 0 40px, #a67a4a 40px 80px),
+    #8a6434;
+  transform: rotateX(60deg) rotateZ(-45deg);
+  box-shadow: 0 0 0 3px var(--panel-edge), 0 30px 50px rgba(0,0,0,0.5);
+  transform-origin: center;
+}
+.wall-back, .wall-side {
+  position: absolute;
+  background: #d4b896;
+  border: 3px solid var(--panel-edge);
+}
+.wall-back {
+  width: 100%; height: 160px;
+  top: -110px;
+  transform: rotateX(60deg) rotateZ(-45deg) translateZ(80px);
+  background: repeating-linear-gradient(0deg, #c9a87d 0 8px, #d4b896 8px 24px);
+}
+
+/* ——— Furniture ——— */
+.furn {
+  position: absolute;
+  border: 3px solid var(--panel-edge);
+  box-shadow: inset -3px -3px 0 rgba(0,0,0,0.3), inset 3px 3px 0 rgba(255,255,255,0.2);
+}
+.bed {
+  width: 90px; height: 60px;
+  left: 30px; top: 60px;
+  background: linear-gradient(180deg, var(--blue) 0%, var(--blue-deep) 100%);
+  transform: rotateX(60deg) rotateZ(-45deg);
+}
+.couch {
+  width: 110px; height: 40px;
+  right: 40px; top: 80px;
+  background: linear-gradient(180deg, var(--red) 0%, var(--red-deep) 100%);
+  transform: rotateX(60deg) rotateZ(-45deg);
+}
+.tv {
+  width: 60px; height: 40px;
+  right: 60px; top: 30px;
+  background: #1a1a1a;
+  transform: rotateX(60deg) rotateZ(-45deg);
+  box-shadow: inset -3px -3px 0 rgba(0,0,0,0.5), inset 3px 3px 0 rgba(100,180,255,0.4);
+}
+.rug {
+  width: 160px; height: 110px;
+  left: 50%; top: 55%;
+  transform: translate(-50%, -50%) rotateX(60deg) rotateZ(-45deg);
+  background: repeating-conic-gradient(from 0deg, var(--pink) 0 25%, #c76a8f 25% 50%);
+  border-color: var(--panel-edge);
+}
+.lamp {
+  width: 16px; height: 50px;
+  left: 170px; top: 40px;
+  background: var(--gold);
+  transform: rotateX(60deg) rotateZ(-45deg);
+}
+.plant {
+  width: 30px; height: 40px;
+  right: 180px; top: 20px;
+  background: var(--green-deep);
+  border-radius: 50% 50% 20% 20%;
+  transform: rotateX(60deg) rotateZ(-45deg);
+}
+
+/* ——— Character ——— */
+.hero {
+  position: absolute;
+  left: 50%; top: 52%;
+  transform: translate(-50%, -90%);
+  width: 48px; height: 72px;
+  z-index: 5;
+  animation: bob 1.2s infinite ease-in-out;
+}
+@keyframes bob {
+  0%, 100% { transform: translate(-50%, -90%); }
+  50% { transform: translate(-50%, -94%); }
+}
+.hero .head {
+  width: 28px; height: 28px;
+  background: #f4c9a0;
+  border: 3px solid var(--panel-edge);
+  margin: 0 auto;
+  position: relative;
+}
+.hero .head::before, .hero .head::after {
+  content: ''; position: absolute;
+  width: 4px; height: 4px;
+  background: var(--panel-edge);
+  top: 10px;
+}
+.hero .head::before { left: 6px; }
+.hero .head::after { right: 6px; }
+.hero .hair {
+  position: absolute;
+  top: -3px; left: 50%;
+  transform: translateX(-50%);
+  width: 34px; height: 12px;
+  background: #3a2416;
+  border: 3px solid var(--panel-edge);
+  border-bottom: none;
+}
+.hero .body {
+  width: 32px; height: 30px;
+  background: var(--green-deep);
+  border: 3px solid var(--panel-edge);
+  margin: 0 auto;
+  border-top: none;
+}
+.hero .legs {
+  width: 24px; height: 14px;
+  background: #2a1f4a;
+  border: 3px solid var(--panel-edge);
+  margin: 0 auto;
+  border-top: none;
+}
+
+/* ——— Speech bubble ——— */
+.bubble {
+  position: absolute;
+  left: 55%;
+  top: 28%;
+  background: var(--ink);
+  color: var(--bg-0);
+  border: 3px solid var(--panel-edge);
+  padding: 6px 10px;
+  font-family: var(--font-pixel);
+  font-size: 8px;
+  box-shadow: 3px 3px 0 var(--panel-edge);
+  animation: float 2s infinite ease-in-out;
+}
+.bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -10px; left: 20px;
+  width: 10px; height: 10px;
+  background: var(--ink);
+  border: 3px solid var(--panel-edge);
+  border-top: none; border-left: none;
+  transform: rotate(45deg);
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* ——— Clouds ——— */
+.cloud {
+  position: absolute;
+  background: rgba(255,255,255,0.4);
+  border: 3px solid rgba(255,255,255,0.6);
+  border-radius: 0;
+}
+.cloud.c1 { width: 60px; height: 16px; top: 30px; left: 10%; animation: drift 25s infinite linear; }
+.cloud.c2 { width: 80px; height: 20px; top: 70px; right: 15%; animation: drift 35s infinite linear reverse; }
+@keyframes drift {
+  from { transform: translateX(-100px); }
+  to { transform: translateX(calc(100vw + 100px)); }
+}
