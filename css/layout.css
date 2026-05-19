@@ -44,7 +44,7 @@ body {
   );
   pointer-events: none;
   mix-blend-mode: multiply;
-  z-index: -1;
+  z-index: 5;
 }
 
 /* ——— TOP BAR ——— */
@@ -210,6 +210,23 @@ body {
   font-size: 7px;
   letter-spacing: 1px;
 }
+
+.sleep-btn {
+  padding: 12px 20px;
+  background: linear-gradient(180deg, var(--blue) 0%, var(--blue-deep) 100%);
+  border: 3px solid var(--panel-edge);
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  color: var(--ink);
+  cursor: pointer;
+  box-shadow: inset -2px -2px 0 rgba(0,0,0,0.3), inset 2px 2px 0 rgba(255,255,255,0.3);
+  letter-spacing: 1px;
+}
+.sleep-btn:hover {
+  background: linear-gradient(180deg, var(--gold) 0%, var(--gold-deep) 100%);
+  color: var(--bg-0);
+}
+.sleep-btn:active { transform: translate(1px,1px); }
 
 .end-day {
   padding: 12px 20px;

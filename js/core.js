@@ -8,6 +8,10 @@ function endDay() {
 
   GameState.day++;
 
+  // ——— Passive rest (basic night's sleep) ———
+  GameState.energy = clamp(GameState.energy + 10);
+  GameState.stress = clamp(GameState.stress - 2);
+
   // ——— Month rollover ———
   if (GameState.day > GameState.daysInMonth) {
     endMonth();

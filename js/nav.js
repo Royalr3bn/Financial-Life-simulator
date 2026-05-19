@@ -36,6 +36,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ——— SLEEP button (full rest + ends day) ———
+  const sleepBtn = document.querySelector('.sleep-btn');
+  if (sleepBtn) {
+    sleepBtn.addEventListener('click', () => {
+      GameState.energy = clamp(GameState.energy + 25);
+      GameState.stress = clamp(GameState.stress - 10);
+      GameState.happiness = clamp(GameState.happiness + 3);
+      showNotification('Slept well! +25 Energy, -10 Stress', 'success');
+      endDay();
+    });
+  }
+
   // ——— Quick actions (Home view) ———
   document.addEventListener('click', (e) => {
     if (!e.target.classList.contains('btn')) return;
@@ -43,10 +55,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     switch (text) {
       case 'SLEEP':
-        GameState.energy = clamp(GameState.energy + 25);
-        GameState.stress = clamp(GameState.stress - 10);
-        showNotification('Had a good rest. +Energy -Stress', 'success');
-        endDay(); // sleeping uses a day
+        // Trigger the bottom bar sleep button
+        const sleepButton = document.querySelector('.sleep-btn');
+        if (sleepButton) sleepButton.click();
         break;
 
       case 'WORK':
