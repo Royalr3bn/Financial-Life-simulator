@@ -44,7 +44,7 @@ body {
   );
   pointer-events: none;
   mix-blend-mode: multiply;
-  z-index: 50;
+  z-index: -1;
 }
 
 /* ——— TOP BAR ——— */
