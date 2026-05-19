@@ -5,17 +5,19 @@
   <title>Penny Wise — Life Sim</title>
   <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
 
-  <!-- CSS: order matters — variables first -->
+  <!-- CSS references -->
   <link rel="stylesheet" href="variables.css">
   <link rel="stylesheet" href="layout.css">
   <link rel="stylesheet" href="components.css">
   <link rel="stylesheet" href="hud.css">
-  <link rel="stylesheet" href="bills.css">
+  <link rel="stylesheet" href="cbills.css">
+  <link rel="stylesheet" href="cshop.css">
+  <link rel="stylesheet" href="job.css">
 </head>
 <body>
   <div class="screen">
 
-    <!--  TOP BAR  -->
+    <!-- ═══════════ TOP BAR ═══════════ -->
     <div class="topbar">
       <div class="date-badge">
         <div class="month">MAR 2026</div>
@@ -55,7 +57,7 @@
       </div>
     </div>
 
-    <!--  VIEW: HOME  -->
+    <!-- ═══════════ VIEW: HOME ═══════════ -->
     <div id="view-home" class="view active">
       <div class="world">
         <div class="cloud c1"></div>
@@ -103,7 +105,7 @@
       </aside>
     </div>
 
-    <!--  VIEW: BILLS  -->
+    <!-- ═══════════ VIEW: BILLS ═══════════ -->
     <div id="view-bills" class="view">
       <!-- Summary strip -->
       <div class="bills-summary">
@@ -271,7 +273,456 @@
       </aside>
     </div>
 
-    <!--  BOTTOM BAR  -->
+    <!-- ═══════════ VIEW: SHOP ═══════════ -->
+    <div id="view-shop" class="view">
+      <!-- Category tabs -->
+      <div class="shop-categories">
+        <div class="cat-tab active"><span class="cat-ico">🥦</span> ESSENTIALS</div>
+        <div class="cat-tab"><span class="cat-ico">🍕</span> TAKEAWAY</div>
+        <div class="cat-tab"><span class="cat-ico">🎮</span> ELECTRONICS</div>
+        <div class="cat-tab"><span class="cat-ico">👕</span> CLOTHING</div>
+        <div class="cat-tab"><span class="cat-ico">🎁</span> SOCIAL</div>
+      </div>
+
+      <!-- Item grid -->
+      <div class="shop-grid">
+
+        <!-- Essential items -->
+        <div class="item-card essential">
+          <div class="item-badge essential">ESSENTIAL</div>
+          <div class="item-icon">🍞</div>
+          <div class="item-name">BREAD & BASICS</div>
+          <div class="item-desc">Bread, milk, eggs, rice — weekly staples</div>
+          <div class="compare-label cheaper">Budget own-brand</div>
+          <div class="item-bottom">
+            <div class="item-price">£ 12</div>
+            <div class="item-stat">+5 Energy</div>
+            <button class="btn-buy">ADD</button>
+          </div>
+        </div>
+
+        <div class="item-card essential">
+          <div class="item-badge essential">ESSENTIAL</div>
+          <div class="item-icon">🥩</div>
+          <div class="item-name">MEAT & PROTEIN</div>
+          <div class="item-desc">Chicken, mince, beans — weekly protein</div>
+          <div class="item-bottom">
+            <div class="item-price">£ 18</div>
+            <div class="item-stat">+8 Energy</div>
+            <button class="btn-buy">ADD</button>
+          </div>
+        </div>
+
+        <div class="item-card essential">
+          <div class="item-badge essential">ESSENTIAL</div>
+          <div class="item-icon">🥬</div>
+          <div class="item-name">FRUIT & VEG</div>
+          <div class="item-desc">Fresh produce — 5 a day keeps stress away</div>
+          <div class="item-bottom">
+            <div class="item-price">£ 15</div>
+            <div class="item-stat">+5 Happy</div>
+            <button class="btn-buy">ADD</button>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <div class="item-badge value">VALUE</div>
+          <div class="item-icon">🧹</div>
+          <div class="item-name">CLEANING</div>
+          <div class="item-desc">Detergent, sponges, bin bags</div>
+          <div class="item-bottom">
+            <div class="item-price">£ 8</div>
+            <div class="item-stat">-3 Stress</div>
+            <button class="btn-buy">ADD</button>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <div class="item-badge value">VALUE</div>
+          <div class="item-icon">🧻</div>
+          <div class="item-name">TOILETRIES</div>
+          <div class="item-desc">Shampoo, toothpaste, loo roll</div>
+          <div class="item-bottom">
+            <div class="item-price">£ 10</div>
+            <div class="item-stat">-2 Stress</div>
+            <button class="btn-buy">ADD</button>
+          </div>
+        </div>
+
+        <!-- Premium / luxury versions -->
+        <div class="item-card luxury">
+          <div class="item-badge luxury">PREMIUM</div>
+          <div class="item-icon">🥩</div>
+          <div class="item-name">STEAK & SALMON</div>
+          <div class="item-desc">Branded premium cuts — tastes better</div>
+          <div class="compare-label pricier">2x the budget option</div>
+          <div class="item-bottom">
+            <div class="item-price">£ 36</div>
+            <div class="item-stat">+12 Happy</div>
+            <button class="btn-buy">ADD</button>
+          </div>
+        </div>
+
+        <!-- Impulse / takeaway -->
+        <div class="item-card impulse">
+          <div class="item-badge impulse">IMPULSE</div>
+          <div class="item-icon">🍕</div>
+          <div class="item-name">PIZZA DELIVERY</div>
+          <div class="item-desc">Hot, easy, instant happiness</div>
+          <div class="item-bottom">
+            <div class="item-price">£ 16</div>
+            <div class="item-stat">+15 Happy</div>
+            <button class="btn-buy">ADD</button>
+          </div>
+        </div>
+
+        <div class="item-card impulse">
+          <div class="item-badge impulse">IMPULSE</div>
+          <div class="item-icon">☕</div>
+          <div class="item-name">COFFEE SHOP</div>
+          <div class="item-desc">Daily latte habit — £4/day adds up fast</div>
+          <div class="compare-label pricier">£4/day = £120/mo!</div>
+          <div class="item-bottom">
+            <div class="item-price">£ 4</div>
+            <div class="item-stat">+3 Energy</div>
+            <button class="btn-buy">ADD</button>
+          </div>
+        </div>
+
+        <div class="item-card impulse">
+          <div class="item-badge impulse">IMPULSE</div>
+          <div class="item-icon">🎮</div>
+          <div class="item-name">NEW GAME</div>
+          <div class="item-desc">Just released — everyone's playing it</div>
+          <div class="item-bottom">
+            <div class="item-price">£ 50</div>
+            <div class="item-stat">+20 Happy</div>
+            <button class="btn-buy">ADD</button>
+          </div>
+        </div>
+
+        <div class="item-card impulse">
+          <div class="item-badge impulse">IMPULSE</div>
+          <div class="item-icon">👟</div>
+          <div class="item-name">TRAINERS</div>
+          <div class="item-desc">Fresh kicks — look good, feel good</div>
+          <div class="item-bottom">
+            <div class="item-price">£ 85</div>
+            <div class="item-stat">+18 Happy</div>
+            <button class="btn-buy">ADD</button>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <div class="item-badge impulse">SOCIAL</div>
+          <div class="item-icon">🍻</div>
+          <div class="item-name">NIGHT OUT</div>
+          <div class="item-desc">Drinks with mates — good vibes, heavy wallet</div>
+          <div class="item-bottom">
+            <div class="item-price">£ 45</div>
+            <div class="item-stat">+25 Happy</div>
+            <button class="btn-buy">ADD</button>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <div class="item-badge value">SMART</div>
+          <div class="item-icon">📚</div>
+          <div class="item-name">MEAL PREP KIT</div>
+          <div class="item-desc">Saves money on food for 2 weeks</div>
+          <div class="compare-label cheaper">Saves £30 vs takeaways</div>
+          <div class="item-bottom">
+            <div class="item-price">£ 25</div>
+            <div class="item-stat">+10 Energy</div>
+            <button class="btn-buy">ADD</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Shop sidebar: cart + budget impact -->
+      <aside class="sidebar">
+        <div class="sb-title cart-title">
+          🛒 CART
+          <span class="cart-count">3</span>
+        </div>
+
+        <div class="panel">
+          <div class="cart-items">
+            <div class="cart-item">
+              <span class="ci-name">🍞 Bread & Basics</span>
+              <span class="ci-price">£12</span>
+              <div class="ci-remove">×</div>
+            </div>
+            <div class="cart-item">
+              <span class="ci-name">🥩 Meat & Protein</span>
+              <span class="ci-price">£18</span>
+              <div class="ci-remove">×</div>
+            </div>
+            <div class="cart-item">
+              <span class="ci-name">🍕 Pizza Delivery</span>
+              <span class="ci-price">£16</span>
+              <div class="ci-remove">×</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cart-totals">
+          <div class="cart-row">
+            <span class="cr-label">Essentials</span>
+            <span class="cr-value">£ 30</span>
+          </div>
+          <div class="cart-row">
+            <span class="cr-label">Impulse</span>
+            <span class="cr-value" style="color: var(--red)">£ 16</span>
+          </div>
+          <div class="cart-row total">
+            <span class="cr-label">TOTAL</span>
+            <span class="cr-value">£ 46</span>
+          </div>
+        </div>
+
+        <div class="sb-title">📊 BUDGET IMPACT</div>
+        <div class="budget-impact">
+          <div class="impact-row">
+            <span class="ir-label">Balance now</span>
+            <span class="ir-value">£ 1,247</span>
+          </div>
+          <div class="impact-row">
+            <span class="ir-label">Cart total</span>
+            <span class="ir-value" style="color: var(--red)">- £ 46</span>
+          </div>
+          <div class="impact-row">
+            <span class="ir-label">Bills due</span>
+            <span class="ir-value" style="color: var(--red)">- £ 987</span>
+          </div>
+          <div class="impact-row remaining">
+            <span class="ir-label">LEFT OVER</span>
+            <span class="ir-value">£ 214</span>
+          </div>
+        </div>
+
+        <div class="sb-title">💡 TIP 💡</div>
+        <div class="shop-tip">
+          That <span class="hl">PIZZA</span> costs the same as 1 day of groceries. Cooking at home saves <span class="hl">£60+/mo</span>.
+        </div>
+
+        <button class="btn-checkout">CHECKOUT — £ 46</button>
+      </aside>
+    </div>
+
+    <!-- ═══════════ VIEW: JOB ═══════════ -->
+    <div id="view-job" class="view">
+      <div class="job-main">
+
+        <!-- Warning banner -->
+        <div class="job-warning">
+          <div class="jw-ico">⚠</div>
+          <div class="jw-text">WARNING: You missed 1 shift this week. 2 more and you risk termination!</div>
+        </div>
+
+        <!-- Current job card -->
+        <div class="current-job">
+          <div class="job-avatar">🏪</div>
+          <div class="job-details">
+            <div class="job-title">RETAIL ASSISTANT</div>
+            <div class="job-company">MegaMart Superstore</div>
+            <div class="job-meta">
+              <span class="tag">PART-TIME</span>
+              <span class="tag">MON-FRI</span>
+              <span class="tag">9AM - 5PM</span>
+              <span class="tag">6 MONTHS</span>
+            </div>
+          </div>
+          <div class="job-salary">
+            <div class="sal-amount">£ 2,100</div>
+            <div class="sal-label">PER MONTH</div>
+            <div class="sal-next">Payday in 16 days</div>
+          </div>
+        </div>
+
+        <!-- Performance -->
+        <div class="performance-section">
+          <div class="perf-header">
+            <div class="perf-title">★ JOB PERFORMANCE ★</div>
+            <div class="perf-rating average">AVERAGE</div>
+          </div>
+          <div class="perf-bar-container">
+            <div class="perf-bar"><span style="width: 62%"></span></div>
+            <div class="perf-markers">
+              <span>FIRED</span>
+              <span>POOR</span>
+              <span>OK</span>
+              <span>GOOD</span>
+              <span>PROMO</span>
+            </div>
+          </div>
+          <div class="perf-stats">
+            <div class="perf-stat good">
+              <div class="ps-value">18 / 22</div>
+              <div class="ps-label">SHIFTS WORKED</div>
+            </div>
+            <div class="perf-stat warn">
+              <div class="ps-value">1</div>
+              <div class="ps-label">MISSED THIS WK</div>
+            </div>
+            <div class="perf-stat">
+              <div class="ps-value">82%</div>
+              <div class="ps-label">ATTENDANCE</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Work actions -->
+        <div class="work-actions">
+          <div class="work-btn go-work">
+            <div class="wb-ico">🏢</div>
+            <div class="wb-title">GO TO WORK</div>
+            <div class="wb-desc">Standard 8-hour shift</div>
+            <div class="wb-effects">
+              <div class="wb-effect positive">+Performance</div>
+              <div class="wb-effect negative">-15 Energy</div>
+              <div class="wb-effect negative">+5 Stress</div>
+            </div>
+          </div>
+          <div class="work-btn overtime">
+            <div class="wb-ico">⏰</div>
+            <div class="wb-title">OVERTIME</div>
+            <div class="wb-desc">Extra 4 hours — 1.5x pay</div>
+            <div class="wb-effects">
+              <div class="wb-effect neutral">+£ 39 bonus</div>
+              <div class="wb-effect positive">++Performance</div>
+              <div class="wb-effect negative">-30 Energy</div>
+              <div class="wb-effect negative">+15 Stress</div>
+            </div>
+          </div>
+          <div class="work-btn skip">
+            <div class="wb-ico">🛌</div>
+            <div class="wb-title">SKIP SHIFT</div>
+            <div class="wb-desc">Stay home — rest up</div>
+            <div class="wb-effects">
+              <div class="wb-effect positive">+20 Energy</div>
+              <div class="wb-effect positive">-10 Stress</div>
+              <div class="wb-effect negative">--Performance</div>
+              <div class="wb-effect negative">Risk: WARNING</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Weekly schedule -->
+        <div class="schedule-section">
+          <div class="schedule-title">📅 THIS WEEK</div>
+          <div class="schedule-grid">
+            <div class="sched-day work">
+              <div class="sd-name">MON</div>
+              <div class="sd-status">✓</div>
+            </div>
+            <div class="sched-day work">
+              <div class="sd-name">TUE</div>
+              <div class="sd-status">✓</div>
+            </div>
+            <div class="sched-day missed">
+              <div class="sd-name">WED</div>
+              <div class="sd-status">✗</div>
+            </div>
+            <div class="sched-day work today">
+              <div class="sd-name">THU</div>
+              <div class="sd-status">?</div>
+            </div>
+            <div class="sched-day off">
+              <div class="sd-name">FRI</div>
+              <div class="sd-status">—</div>
+            </div>
+            <div class="sched-day off">
+              <div class="sd-name">SAT</div>
+              <div class="sd-status">OFF</div>
+            </div>
+            <div class="sched-day off">
+              <div class="sd-name">SUN</div>
+              <div class="sd-status">OFF</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Job board -->
+        <div class="job-board-title">📋 JOB BOARD — APPLY FOR NEW ROLES</div>
+
+        <div class="job-listing">
+          <div class="jl-header">
+            <div class="jl-title">☕ BARISTA</div>
+            <div class="jl-salary">£ 1,800 /mo</div>
+          </div>
+          <div class="jl-desc">Local coffee shop — flexible hours, less pay but lower stress</div>
+          <div class="jl-reqs">
+            <div class="jl-req met">✓ NO EXPERIENCE</div>
+            <div class="jl-req met">✓ AVAILABLE NOW</div>
+          </div>
+          <button class="btn-apply">APPLY</button>
+        </div>
+
+        <div class="job-listing">
+          <div class="jl-header">
+            <div class="jl-title">💻 JUNIOR DEVELOPER</div>
+            <div class="jl-salary">£ 2,800 /mo</div>
+          </div>
+          <div class="jl-desc">Tech startup — great pay, high pressure, full-time only</div>
+          <div class="jl-reqs">
+            <div class="jl-req met">✓ 6 MO. EXPERIENCE</div>
+            <div class="jl-req unmet">✗ PERF. ABOVE 75%</div>
+          </div>
+          <button class="btn-apply">APPLY</button>
+        </div>
+
+        <div class="job-listing">
+          <div class="jl-header">
+            <div class="jl-title">📦 WAREHOUSE WORKER</div>
+            <div class="jl-salary">£ 2,300 /mo</div>
+          </div>
+          <div class="jl-desc">Night shifts — decent pay, drains energy fast</div>
+          <div class="jl-reqs">
+            <div class="jl-req met">✓ NO EXPERIENCE</div>
+            <div class="jl-req met">✓ AVAILABLE NOW</div>
+          </div>
+          <button class="btn-apply">APPLY</button>
+        </div>
+
+      </div>
+
+      <!-- Job sidebar -->
+      <aside class="sidebar">
+        <div class="sb-title">💰 INCOME 💰</div>
+        <div class="panel">
+          <div class="budget-row income"><span class="lbl">Base salary</span><span class="val">£2,100</span></div>
+          <div class="budget-row income"><span class="lbl">Overtime (wk)</span><span class="val">£0</span></div>
+          <div class="budget-row"><span class="lbl">Tax (est.)</span><span class="val" style="color: var(--red)">-£180</span></div>
+          <div class="budget-row save"><span class="lbl">Take home</span><span class="val">£1,920</span></div>
+        </div>
+
+        <div class="sb-title">📈 CAREER ★</div>
+        <div class="panel">
+          <div class="budget-row"><span class="lbl">Role</span><span class="val">Retail Asst.</span></div>
+          <div class="budget-row"><span class="lbl">Tenure</span><span class="val">6 months</span></div>
+          <div class="budget-row"><span class="lbl">Next review</span><span class="val" style="color: var(--gold)">14 days</span></div>
+          <div class="budget-row"><span class="lbl">Raise chance</span><span class="val" style="color: var(--orange)">LOW</span></div>
+        </div>
+
+        <div class="sb-title">💡 TIP 💡</div>
+        <div class="panel">
+          <div class="tip-text">
+            Your review is in <span class="hl">14 DAYS</span>. Keep attendance above <span class="hl">90%</span> and you could get a <span class="hl">£150/mo</span> raise.
+          </div>
+        </div>
+
+        <div class="sb-title">⚖ TRADE-OFFS ⚖</div>
+        <div class="panel">
+          <div class="tip-text">
+            <span class="hl">OVERTIME</span> earns extra cash but costs energy and raises stress. Use it when bills are tight, not every day.
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- ═══════════ BOTTOM BAR ═══════════ -->
     <div class="bottombar">
       <div class="action-tab active" data-view="view-home">
         <div class="ico">🏠</div>

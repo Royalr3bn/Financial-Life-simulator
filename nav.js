@@ -1,7 +1,7 @@
-/* ═══════════════════════════════════════
+/* 
    PENNY WISE — Navigation
    Tab switching between views
-   ═══════════════════════════════════════ */
+    */
 
 document.addEventListener('DOMContentLoaded', () => {
   const tabs = document.querySelectorAll('.action-tab[data-view]');
