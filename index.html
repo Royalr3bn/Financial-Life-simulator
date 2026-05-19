@@ -5,14 +5,16 @@
   <title>Penny Wise — Life Sim</title>
   <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
 
-  <!-- CSS references -->
-  <link rel="stylesheet" href="variables.css">
-  <link rel="stylesheet" href="layout.css">
-  <link rel="stylesheet" href="components.css">
-  <link rel="stylesheet" href="hud.css">
-  <link rel="stylesheet" href="cbills.css">
-  <link rel="stylesheet" href="cshop.css">
-  <link rel="stylesheet" href="job.css">
+  <!-- CSS: order matters — variables first -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/hud.css">
+  <link rel="stylesheet" href="css/bills.css">
+  <link rel="stylesheet" href="css/shop.css">
+  <link rel="stylesheet" href="css/job.css">
+  <link rel="stylesheet" href="css/bank.css">
+  <link rel="stylesheet" href="css/stats.css">
 </head>
 <body>
   <div class="screen">
@@ -722,6 +724,383 @@
       </aside>
     </div>
 
+    <!-- ═══════════ VIEW: BANK ═══════════ -->
+    <div id="view-bank" class="view">
+      <div class="bank-main">
+
+        <!-- Account cards -->
+        <div class="accounts-row">
+          <div class="account-card current">
+            <div class="acc-header">
+              <div class="acc-ico">💳</div>
+              <div class="acc-type">CURRENT ACCOUNT</div>
+            </div>
+            <div class="acc-balance">£ 1,247</div>
+            <div class="acc-detail">Available to spend. Bills due: <span class="warn">£987</span></div>
+          </div>
+          <div class="account-card savings">
+            <div class="acc-header">
+              <div class="acc-ico">🏦</div>
+              <div class="acc-type">SAVINGS ACCOUNT</div>
+            </div>
+            <div class="acc-balance">£ 340</div>
+            <div class="acc-detail">Interest: <span class="hl">+£1.42/mo</span> (5% AER)</div>
+          </div>
+        </div>
+
+        <!-- Transfer section -->
+        <div class="transfer-section">
+          <div class="transfer-title">↔ TRANSFER MONEY</div>
+          <div class="transfer-controls">
+            <div class="transfer-box">
+              <div class="tb-label">FROM: CURRENT</div>
+              <div class="tb-balance">£ 1,247</div>
+            </div>
+            <div class="transfer-arrow">
+              <div class="arrow-btn">→</div>
+              <div class="arrow-btn">←</div>
+            </div>
+            <div class="transfer-box">
+              <div class="tb-label">TO: SAVINGS</div>
+              <div class="tb-balance">£ 340</div>
+            </div>
+          </div>
+          <div class="transfer-amounts">
+            <button class="amt-btn">£25</button>
+            <button class="amt-btn">£50</button>
+            <button class="amt-btn selected">£100</button>
+            <button class="amt-btn">£200</button>
+            <button class="amt-btn">MAX</button>
+          </div>
+          <button class="btn-transfer">TRANSFER £100 →</button>
+        </div>
+
+        <!-- Savings goals -->
+        <div class="goals-title">🎯 SAVINGS GOALS</div>
+
+        <div class="goal-card">
+          <div class="goal-header">
+            <div class="goal-ico">🚨</div>
+            <div class="goal-name">EMERGENCY FUND</div>
+            <div class="goal-amounts">£340 / £1,000</div>
+          </div>
+          <div class="goal-bar emergency"><span style="width: 34%"></span></div>
+          <div class="goal-footer">
+            <span>3 months expenses = safety net</span>
+            <span class="gf-pct">34%</span>
+          </div>
+        </div>
+
+        <div class="goal-card">
+          <div class="goal-header">
+            <div class="goal-ico">✈</div>
+            <div class="goal-name">HOLIDAY FUND</div>
+            <div class="goal-amounts">£0 / £600</div>
+          </div>
+          <div class="goal-bar holiday"><span style="width: 0%"></span></div>
+          <div class="goal-footer">
+            <span>Summer trip — start saving!</span>
+            <span class="gf-pct">0%</span>
+          </div>
+        </div>
+
+        <div class="goal-card">
+          <div class="goal-header">
+            <div class="goal-ico">💻</div>
+            <div class="goal-name">NEW LAPTOP</div>
+            <div class="goal-amounts">£0 / £800</div>
+          </div>
+          <div class="goal-bar tech"><span style="width: 0%"></span></div>
+          <div class="goal-footer">
+            <span>Needed for career upgrade</span>
+            <span class="gf-pct">0%</span>
+          </div>
+        </div>
+
+        <!-- Transaction history -->
+        <div class="transactions-title">📜 RECENT TRANSACTIONS</div>
+
+        <div class="panel">
+          <div class="transaction">
+            <div class="tx-ico">💰</div>
+            <div class="tx-info">
+              <div class="tx-name">Salary — MegaMart</div>
+              <div class="tx-date">Mar 1</div>
+            </div>
+            <div class="tx-amount income">+£2,100</div>
+          </div>
+          <div class="transaction">
+            <div class="tx-ico">🏠</div>
+            <div class="tx-info">
+              <div class="tx-name">Rent payment</div>
+              <div class="tx-date">Mar 1</div>
+            </div>
+            <div class="tx-amount expense">-£850</div>
+          </div>
+          <div class="transaction">
+            <div class="tx-ico">🎵</div>
+            <div class="tx-info">
+              <div class="tx-name">Tunebox sub</div>
+              <div class="tx-date">Mar 3</div>
+            </div>
+            <div class="tx-amount expense">-£10</div>
+          </div>
+          <div class="transaction">
+            <div class="tx-ico">🏦</div>
+            <div class="tx-info">
+              <div class="tx-name">Transfer to savings</div>
+              <div class="tx-date">Mar 5</div>
+            </div>
+            <div class="tx-amount transfer">→ £150</div>
+          </div>
+          <div class="transaction">
+            <div class="tx-ico">🛒</div>
+            <div class="tx-info">
+              <div class="tx-name">Groceries</div>
+              <div class="tx-date">Mar 8</div>
+            </div>
+            <div class="tx-amount expense">-£43</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bank sidebar -->
+      <aside class="sidebar">
+        <div class="sb-title">📊 SUMMARY 📊</div>
+        <div class="panel">
+          <div class="budget-row"><span class="lbl">Net worth</span><span class="val" style="color: var(--gold)">£1,587</span></div>
+          <div class="budget-row"><span class="lbl">Current</span><span class="val" style="color: var(--blue)">£1,247</span></div>
+          <div class="budget-row"><span class="lbl">Savings</span><span class="val" style="color: var(--gold)">£340</span></div>
+          <div class="budget-row"><span class="lbl">Debt</span><span class="val" style="color: var(--green)">£0</span></div>
+        </div>
+
+        <div class="sb-title">📈 INTEREST 📈</div>
+        <div class="panel">
+          <div class="budget-row"><span class="lbl">Rate</span><span class="val">5% AER</span></div>
+          <div class="budget-row"><span class="lbl">Earned (mo)</span><span class="val" style="color: var(--green)">+£1.42</span></div>
+          <div class="budget-row"><span class="lbl">Earned (yr)</span><span class="val" style="color: var(--green)">+£17.00</span></div>
+        </div>
+
+        <div class="sb-title">💡 TIP 💡</div>
+        <div class="panel">
+          <div class="tip-text">
+            An <span class="hl">EMERGENCY FUND</span> of 3 months' expenses protects you from unexpected costs. You're <span class="hl">34%</span> there — keep going!
+          </div>
+        </div>
+
+        <div class="sb-title">⚠ RULES ⚠</div>
+        <div class="panel">
+          <div class="tip-text">
+            Go below <span class="hl">£0</span> and you enter overdraft. <span class="hl">£5/day</span> fees apply until you're back in the green.
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- ═══════════ VIEW: STATS ═══════════ -->
+    <div id="view-stats" class="view">
+      <div class="stats-main">
+
+        <!-- Financial health score -->
+        <div class="health-score">
+          <div class="score-circle">
+            <div class="score-value">
+              <div class="sv-num">64</div>
+              <div class="sv-label">/ 100</div>
+            </div>
+          </div>
+          <div class="score-breakdown">
+            <div class="sb-row"><span class="sb-label">Bill payments</span><span class="sb-grade b">B</span></div>
+            <div class="sb-row"><span class="sb-label">Savings rate</span><span class="sb-grade c">C</span></div>
+            <div class="sb-row"><span class="sb-label">Spending control</span><span class="sb-grade c">C</span></div>
+            <div class="sb-row"><span class="sb-label">Income stability</span><span class="sb-grade b">B</span></div>
+            <div class="sb-row"><span class="sb-label">Emergency fund</span><span class="sb-grade d">D</span></div>
+          </div>
+        </div>
+
+        <!-- Spending breakdown chart -->
+        <div class="spending-chart">
+          <div class="chart-title">📊 SPENDING BREAKDOWN — MAR</div>
+          <div class="chart-bars">
+            <div class="chart-bar-row">
+              <span class="cb-label">Rent</span>
+              <div class="cb-track rent"><span style="width: 82%"></span></div>
+              <span class="cb-amount">£ 850</span>
+            </div>
+            <div class="chart-bar-row">
+              <span class="cb-label">Groceries</span>
+              <div class="cb-track groceries"><span style="width: 23%"></span></div>
+              <span class="cb-amount">£ 240</span>
+            </div>
+            <div class="chart-bar-row">
+              <span class="cb-label">Utilities</span>
+              <div class="cb-track bills"><span style="width: 16%"></span></div>
+              <span class="cb-amount">£ 167</span>
+            </div>
+            <div class="chart-bar-row">
+              <span class="cb-label">Subscriptions</span>
+              <div class="cb-track subs"><span style="width: 5%"></span></div>
+              <span class="cb-amount">£ 47</span>
+            </div>
+            <div class="chart-bar-row">
+              <span class="cb-label">Impulse</span>
+              <div class="cb-track impulse"><span style="width: 10%"></span></div>
+              <span class="cb-amount">£ 105</span>
+            </div>
+            <div class="chart-bar-row">
+              <span class="cb-label">Savings</span>
+              <div class="cb-track savings"><span style="width: 14%"></span></div>
+              <span class="cb-amount">£ 150</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Income vs Expenses -->
+        <div class="income-vs-expense">
+          <div class="chart-title">💰 INCOME vs EXPENSES — MAR</div>
+          <div class="ive-row">
+            <div class="ive-block income">
+              <div class="ive-label">INCOME</div>
+              <div class="ive-amount">£ 2,100</div>
+            </div>
+            <div class="ive-vs">vs</div>
+            <div class="ive-block expense">
+              <div class="ive-label">EXPENSES</div>
+              <div class="ive-amount">£ 1,559</div>
+            </div>
+          </div>
+          <div class="ive-result positive">
+            <div class="ive-label">NET THIS MONTH</div>
+            <div class="ive-amount">+ £ 541</div>
+          </div>
+        </div>
+
+        <!-- Monthly timeline -->
+        <div class="timeline-section">
+          <div class="timeline-title">📅 SAVINGS TREND</div>
+          <div class="timeline-months">
+            <div class="tl-month negative">
+              <div class="tl-name">OCT</div>
+              <div class="tl-balance">£ 80</div>
+              <div class="tl-saved">-£120</div>
+            </div>
+            <div class="tl-month positive">
+              <div class="tl-name">NOV</div>
+              <div class="tl-balance">£ 130</div>
+              <div class="tl-saved">+£50</div>
+            </div>
+            <div class="tl-month positive">
+              <div class="tl-name">DEC</div>
+              <div class="tl-balance">£ 90</div>
+              <div class="tl-saved">-£40</div>
+            </div>
+            <div class="tl-month positive">
+              <div class="tl-name">JAN</div>
+              <div class="tl-balance">£ 190</div>
+              <div class="tl-saved">+£100</div>
+            </div>
+            <div class="tl-month positive">
+              <div class="tl-name">FEB</div>
+              <div class="tl-balance">£ 240</div>
+              <div class="tl-saved">+£50</div>
+            </div>
+            <div class="tl-month current positive">
+              <div class="tl-name">MAR</div>
+              <div class="tl-balance">£ 340</div>
+              <div class="tl-saved">+£100</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Achievements -->
+        <div class="achievements-title">🏆 ACHIEVEMENTS</div>
+
+        <div class="achievement unlocked">
+          <div class="ach-icon">🎯</div>
+          <div class="ach-info">
+            <div class="ach-name">FIRST SAVER</div>
+            <div class="ach-desc">Put money into savings for the first time</div>
+          </div>
+        </div>
+
+        <div class="achievement unlocked">
+          <div class="ach-icon">📋</div>
+          <div class="ach-info">
+            <div class="ach-name">BILL PAYER</div>
+            <div class="ach-desc">Paid all bills on time for 1 month</div>
+          </div>
+        </div>
+
+        <div class="achievement unlocked">
+          <div class="ach-icon">🍳</div>
+          <div class="ach-info">
+            <div class="ach-name">HOME COOK</div>
+            <div class="ach-desc">Bought groceries instead of takeaway 5 times</div>
+          </div>
+        </div>
+
+        <div class="achievement locked">
+          <div class="ach-icon">🔒</div>
+          <div class="ach-info">
+            <div class="ach-name">RAINY DAY READY</div>
+            <div class="ach-desc">Build emergency fund to £1,000</div>
+          </div>
+        </div>
+
+        <div class="achievement locked">
+          <div class="ach-icon">🔒</div>
+          <div class="ach-info">
+            <div class="ach-name">NO IMPULSE MONTH</div>
+            <div class="ach-desc">Complete a month with zero impulse purchases</div>
+          </div>
+        </div>
+
+        <div class="achievement locked">
+          <div class="ach-icon">🔒</div>
+          <div class="ach-info">
+            <div class="ach-name">PROMOTED</div>
+            <div class="ach-desc">Get a raise or promotion at work</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Stats sidebar -->
+      <aside class="sidebar stats-sidebar">
+        <div class="sb-title">★ THIS MONTH ★</div>
+        <div class="panel">
+          <div class="budget-row"><span class="lbl">Days played</span><span class="val">14</span></div>
+          <div class="budget-row"><span class="lbl">Bills paid</span><span class="val" style="color: var(--green)">1 / 8</span></div>
+          <div class="budget-row"><span class="lbl">Bills overdue</span><span class="val" style="color: var(--red)">1</span></div>
+          <div class="budget-row"><span class="lbl">Shifts worked</span><span class="val">18</span></div>
+          <div class="budget-row"><span class="lbl">Shifts missed</span><span class="val" style="color: var(--red)">1</span></div>
+          <div class="budget-row"><span class="lbl">Impulse buys</span><span class="val" style="color: var(--orange)">3</span></div>
+        </div>
+
+        <div class="sb-title">🎯 GOALS 🎯</div>
+        <div class="panel">
+          <div class="budget-row"><span class="lbl">Stay out of debt</span><span class="val" style="color: var(--green)">✓</span></div>
+          <div class="budget-row"><span class="lbl">Save £100+</span><span class="val" style="color: var(--green)">✓</span></div>
+          <div class="budget-row"><span class="lbl">No late bills</span><span class="val" style="color: var(--red)">✗</span></div>
+          <div class="budget-row"><span class="lbl">Under budget</span><span class="val" style="color: var(--green)">✓</span></div>
+        </div>
+
+        <div class="sb-title">💡 INSIGHT 💡</div>
+        <div class="panel">
+          <div class="tip-of-month">
+            You spent <span class="hl">£105</span> on impulse buys this month. That's <span class="hl">5%</span> of your income. Cutting that in half would add <span class="hl">£630/yr</span> to your savings.
+          </div>
+        </div>
+
+        <div class="sb-title">🏆 PROGRESS 🏆</div>
+        <div class="panel">
+          <div class="budget-row"><span class="lbl">Unlocked</span><span class="val" style="color: var(--gold)">3 / 6</span></div>
+          <div class="budget-row"><span class="lbl">Best score</span><span class="val" style="color: var(--gold)">64</span></div>
+        </div>
+      </aside>
+    </div>
+
     <!-- ═══════════ BOTTOM BAR ═══════════ -->
     <div class="bottombar">
       <div class="action-tab active" data-view="view-home">
@@ -754,8 +1133,12 @@
 
   </div>
 
-  <!-- JS: game state first, then nav -->
+  <!-- JS: load order matters — state first, then helpers, then logic, then nav last -->
   <script src="js/game.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/bills.js"></script>
+  <script src="js/shop.js"></script>
   <script src="js/nav.js"></script>
 </body>
 </html>

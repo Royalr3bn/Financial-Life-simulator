@@ -1,0 +1,336 @@
+/* ═══════════════════════════════════════
+   PENNY WISE — Stats View
+   Dashboard, spending chart, score, tips
+   ═══════════════════════════════════════ */
+
+/* ——— Stats view layout ——— */
+#view-stats {
+  grid-template-columns: 1fr 260px;
+  grid-template-rows: 1fr;
+}
+
+/* ——— Stats main area ——— */
+.stats-main {
+  padding: 14px 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.stats-main::-webkit-scrollbar { width: 12px; }
+.stats-main::-webkit-scrollbar-track {
+  background: var(--shadow);
+  border: 2px solid var(--panel-edge);
+}
+.stats-main::-webkit-scrollbar-thumb {
+  background: var(--panel-light);
+  border: 2px solid var(--panel-edge);
+}
+
+/* ——— Financial health score ——— */
+.health-score {
+  background: var(--panel);
+  border: 3px solid var(--panel-edge);
+  padding: 16px;
+  box-shadow: inset -2px -2px 0 rgba(0,0,0,0.4), inset 2px 2px 0 rgba(255,255,255,0.1);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 20px;
+  align-items: center;
+}
+
+.score-circle {
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--gold) 0deg 230deg,
+    var(--shadow) 230deg 360deg
+  );
+  display: grid;
+  place-items: center;
+  position: relative;
+  border: 3px solid var(--panel-edge);
+}
+.score-circle::after {
+  content: '';
+  width: 74px; height: 74px;
+  background: var(--panel);
+  border-radius: 50%;
+  position: absolute;
+  border: 2px solid var(--panel-edge);
+}
+.score-value {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+.score-value .sv-num {
+  font-family: var(--font-pixel);
+  font-size: 22px;
+  color: var(--gold);
+}
+.score-value .sv-label {
+  font-family: var(--font-pixel);
+  font-size: 7px;
+  color: var(--ink-dim);
+  letter-spacing: 1px;
+}
+
+.score-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sb-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.sb-row .sb-label {
+  font-size: 16px;
+  color: var(--ink-dim);
+}
+.sb-row .sb-grade {
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  padding: 3px 10px;
+  border: 2px solid var(--panel-edge);
+  letter-spacing: 1px;
+}
+.sb-grade.a { background: var(--green-deep); color: var(--ink); }
+.sb-grade.b { background: var(--blue-deep); color: var(--ink); }
+.sb-grade.c { background: var(--gold-deep); color: var(--bg-0); }
+.sb-grade.d { background: var(--orange); color: var(--bg-0); }
+.sb-grade.f { background: var(--red-deep); color: var(--ink); }
+
+/* ——— Spending breakdown chart ——— */
+.spending-chart {
+  background: var(--panel);
+  border: 3px solid var(--panel-edge);
+  padding: 14px;
+  box-shadow: inset -2px -2px 0 rgba(0,0,0,0.4), inset 2px 2px 0 rgba(255,255,255,0.1);
+}
+.chart-title {
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 1px;
+  margin-bottom: 14px;
+}
+
+/* Horizontal bar chart */
+.chart-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.chart-bar-row {
+  display: grid;
+  grid-template-columns: 100px 1fr 60px;
+  gap: 10px;
+  align-items: center;
+}
+.cb-label {
+  font-size: 15px;
+  color: var(--ink-dim);
+  text-align: right;
+}
+.cb-track {
+  height: 18px;
+  background: var(--shadow);
+  border: 2px solid var(--panel-edge);
+  position: relative;
+  overflow: hidden;
+}
+.cb-track > span {
+  display: block;
+  height: 100%;
+  box-shadow: inset 0 -3px 0 rgba(0,0,0,0.3), inset 0 2px 0 rgba(255,255,255,0.2);
+  transition: width 0.6s;
+}
+.cb-track.rent > span { background: var(--blue); }
+.cb-track.groceries > span { background: var(--green); }
+.cb-track.bills > span { background: var(--orange); }
+.cb-track.subs > span { background: var(--pink); }
+.cb-track.impulse > span { background: var(--red); }
+.cb-track.savings > span { background: var(--gold); }
+
+.cb-amount {
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  color: var(--ink);
+  text-align: right;
+}
+
+/* ——— Income vs Expenses ——— */
+.income-vs-expense {
+  background: var(--panel);
+  border: 3px solid var(--panel-edge);
+  padding: 14px;
+  box-shadow: inset -2px -2px 0 rgba(0,0,0,0.4), inset 2px 2px 0 rgba(255,255,255,0.1);
+}
+
+.ive-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.ive-block {
+  text-align: center;
+  padding: 10px;
+  background: var(--bg-0);
+  border: 2px solid var(--panel-edge);
+}
+.ive-block .ive-label {
+  font-family: var(--font-pixel);
+  font-size: 7px;
+  color: var(--ink-dim);
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.ive-block .ive-amount {
+  font-family: var(--font-pixel);
+  font-size: 16px;
+}
+.ive-block.income .ive-amount { color: var(--green); }
+.ive-block.expense .ive-amount { color: var(--red); }
+.ive-vs {
+  font-family: var(--font-pixel);
+  font-size: 12px;
+  color: var(--ink-dim);
+}
+
+.ive-result {
+  text-align: center;
+  padding: 8px;
+  background: var(--bg-0);
+  border: 2px solid var(--panel-edge);
+}
+.ive-result .ive-label {
+  font-family: var(--font-pixel);
+  font-size: 7px;
+  color: var(--ink-dim);
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.ive-result .ive-amount {
+  font-family: var(--font-pixel);
+  font-size: 18px;
+}
+.ive-result.positive .ive-amount { color: var(--green); }
+.ive-result.negative .ive-amount { color: var(--red); }
+
+/* ——— Monthly timeline ——— */
+.timeline-section {
+  background: var(--panel);
+  border: 3px solid var(--panel-edge);
+  padding: 14px;
+  box-shadow: inset -2px -2px 0 rgba(0,0,0,0.4), inset 2px 2px 0 rgba(255,255,255,0.1);
+}
+.timeline-title {
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+.timeline-months {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+.tl-month {
+  background: var(--bg-0);
+  border: 2px solid var(--panel-edge);
+  padding: 8px 4px;
+  text-align: center;
+}
+.tl-month .tl-name {
+  font-family: var(--font-pixel);
+  font-size: 7px;
+  color: var(--ink-dim);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.tl-month .tl-balance {
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.tl-month .tl-saved {
+  font-size: 13px;
+}
+.tl-month.positive .tl-saved { color: var(--green); }
+.tl-month.negative .tl-saved { color: var(--red); }
+.tl-month.current {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1px var(--gold);
+}
+.tl-month.future {
+  opacity: 0.4;
+}
+
+/* ——— Achievements ——— */
+.achievements-title {
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  padding: 6px 0 4px;
+  border-bottom: 2px dashed var(--panel-light);
+  margin-bottom: 8px;
+}
+
+.achievement {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  margin-bottom: 6px;
+  background: var(--panel);
+  border: 3px solid var(--panel-edge);
+  box-shadow: inset -2px -2px 0 rgba(0,0,0,0.4), inset 2px 2px 0 rgba(255,255,255,0.1);
+}
+.achievement.locked { opacity: 0.4; }
+.achievement.unlocked { border-color: var(--gold-deep); }
+
+.ach-icon {
+  width: 40px; height: 40px;
+  display: grid;
+  place-items: center;
+  background: var(--bg-0);
+  border: 2px solid var(--panel-edge);
+  font-size: 22px;
+}
+.achievement.unlocked .ach-icon {
+  background: var(--gold-deep);
+  border-color: var(--gold);
+}
+
+.ach-info .ach-name {
+  font-family: var(--font-pixel);
+  font-size: 8px;
+  color: var(--ink);
+  letter-spacing: 1px;
+  margin-bottom: 3px;
+}
+.ach-info .ach-desc {
+  font-size: 14px;
+  color: var(--ink-dim);
+}
+.achievement.locked .ach-info .ach-name { color: var(--ink-dim); }
+
+/* ——— Stats sidebar ——— */
+.stats-sidebar .tip-of-month {
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--ink);
+}
+.stats-sidebar .tip-of-month .hl {
+  color: var(--gold);
+  font-family: var(--font-pixel);
+  font-size: 9px;
+}
