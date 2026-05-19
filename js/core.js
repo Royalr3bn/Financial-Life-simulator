@@ -160,45 +160,105 @@ function trackSpending(bill) {
 }
 
 function checkGameOver() {
-  // Debt too high
+  // 1. Stress Burnout Check (Highest Priority)
+  if (GameState.stress >= 100) {
+    GameState.gameOver = true;
+    GameState.gameOverReason = "Complete Burnout! Your stress levels hit 100% and you couldn't handle the pressure.";
+    showNotification('GAME OVER: Stress Burnout!', 'danger');
+    showGameOverModal();
+    return;
+  }
+
+  // 2. Debt Crisis Check
   if (GameState.debt > 500) {
     GameState.gameOver = true;
-    GameState.gameOverReason = 'Debt spiralled out of control. You couldn\'t keep up with payments.';
+    GameState.gameOverReason = "Debt spiralled out of control. You couldn't keep up with payments.";
     showNotification('GAME OVER: Debt crisis!', 'danger');
+    showGameOverModal();
+    return;
   }
 
-  // Fired from job
+  // 3. Fired Check
   if (GameState.job.warningCount >= 3) {
     GameState.gameOver = true;
-    GameState.gameOverReason = 'You were fired for missing too many shifts. No income means no way to pay bills.';
+    GameState.gameOverReason = "You were fired for missing too many shifts. No income means no way to pay bills.";
     showNotification('GAME OVER: You got fired!', 'danger');
+    showGameOverModal();
+    return;
   }
 
-  // All stats bottomed out
-  if (GameState.happiness <= 0 && GameState.energy <= 0 && GameState.stress >= 100) {
+  // 4. All Stats Bottomed Out
+  if (GameState.happiness <= 0 && GameState.energy <= 0) {
     GameState.gameOver = true;
-    GameState.gameOverReason = 'Complete burnout. Your health and happiness hit rock bottom.';
+    GameState.gameOverReason = "Complete burnout. Your health and happiness hit rock bottom.";
     showNotification('GAME OVER: Burnout!', 'danger');
+    showGameOverModal();
+    return;
   }
 }
 
-function checkMonthlyAchievements() {
-  // No impulse month
-  if (GameState.impulseThisMonth === 0 && !GameState.achievements.noImpulse.unlocked) {
-    GameState.achievements.noImpulse.unlocked = true;
-    showNotification('🏆 Achievement: No Impulse Month!', 'success');
-  }
+// Custom Retro Pixel-Art Game Over Modal
+function showGameOverModal() {
+  if (document.getElementById('game-over-modal')) return;
 
-  // Rainy day ready
-  if (GameState.savings >= 1000 && !GameState.achievements.rainyDay.unlocked) {
-    GameState.achievements.rainyDay.unlocked = true;
-    showNotification('🏆 Achievement: Rainy Day Ready!', 'success');
-  }
+  const modal = document.createElement('div');
+  modal.id = 'game-over-modal';
+  modal.style.position = 'absolute';
+  modal.style.top = '0';
+  modal.style.left = '0';
+  modal.style.width = '100%';
+  modal.style.height = '100%';
+  modal.style.backgroundColor = 'rgba(10, 6, 19, 0.9)'; 
+  modal.style.display = 'flex';
+  modal.style.justifyContent = 'center';
+  modal.style.alignItems = 'center';
+  modal.style.zIndex = '9999';
 
-  // All bills paid on time
-  const anyLate = Object.keys(GameState.lateFees).length > 0;
-  if (!anyLate && !GameState.achievements.billPayer.unlocked) {
-    GameState.achievements.billPayer.unlocked = true;
-    showNotification('🏆 Achievement: Bill Payer!', 'success');
+  const content = document.createElement('div');
+  content.style.background = 'var(--panel)';
+  content.style.border = '4px solid var(--red)';
+  content.style.padding = '30px';
+  content.style.width = '440px';
+  content.style.textAlign = 'center';
+  content.style.boxShadow = '0 0 20px rgba(0,0,0,0.8), inset -4px -4px 0 rgba(0,0,0,0.4)';
+
+  const title = document.createElement('h2');
+  title.textContent = '★ GAME OVER ★';
+  title.style.fontFamily = 'var(--font-pixel)';
+  title.style.fontSize = '16px';
+  title.style.color = 'var(--red)';
+  title.style.marginBottom = '20px';
+
+  const reason = document.createElement('p');
+  reason.textContent = GameState.gameOverReason;
+  reason.style.fontFamily = 'var(--font-body)';
+  reason.style.fontSize = '24px';
+  reason.style.color = 'var(--ink)';
+  reason.style.marginBottom = '30px';
+
+  const restartBtn = document.createElement('button');
+  restartBtn.textContent = 'RESTART ↻';
+  restartBtn.style.fontFamily = 'var(--font-pixel)';
+  restartBtn.style.fontSize = '10px';
+  restartBtn.style.padding = '12px 24px';
+  restartBtn.style.background = 'linear-gradient(180deg, var(--green) 0%, var(--green-deep) 100%)';
+  restartBtn.style.color = 'var(--ink)';
+  restartBtn.style.border = '3px solid var(--panel-edge)';
+  restartBtn.style.cursor = 'pointer';
+
+  restartBtn.onclick = () => {
+    window.location.reload();
+  };
+
+  content.appendChild(title);
+  content.appendChild(reason);
+  content.appendChild(restartBtn);
+  modal.appendChild(content);
+
+  const screenEl = document.querySelector('.screen');
+  if (screenEl) {
+    screenEl.appendChild(modal);
+  } else {
+    document.body.appendChild(modal);
   }
 }

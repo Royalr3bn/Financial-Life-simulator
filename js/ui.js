@@ -4,7 +4,7 @@
    ═══════════════════════════════════════ */
 
 function updateUI() {
-  // ——— Top bar ———
+  // Top bar
   const monthLabel = document.querySelector('.date-badge .month');
   const dayLabel = document.querySelector('.date-badge .day');
   const balanceLabel = document.querySelector('.wallet .amount');
@@ -23,7 +23,7 @@ function updateUI() {
   }
   if (paydayLabel) paydayLabel.textContent = `+£${GameState.salary.toLocaleString()} payday in ${daysToPayday}d`;
 
-  // ——— Stat bars ———
+  // Stat bars
   const happyBar = document.querySelector('.bar.happy > span');
   const energyBar = document.querySelector('.bar.energy > span');
   const stressBar = document.querySelector('.bar.stress > span');
@@ -32,23 +32,26 @@ function updateUI() {
   if (energyBar) energyBar.style.width = `${GameState.energy}%`;
   if (stressBar) stressBar.style.width = `${GameState.stress}%`;
 
-  // ——— Home sidebar budget ———
+  // Home sidebar budget
   updateHomeBudget();
 
-  // ——— Bills view ———
+  // Bills view
   updateBillsView();
 
-  // ——— Shop cart ———
+  // Shop cart
   updateCartView();
 
-  // ——— Bank view ———
+  // Bank view
   updateBankView();
 
-  // ——— Speech bubble ———
+  // Speech bubble
   updateBubble();
 
-  // ——— Notification badge ———
+  //  Notification badge
   updateNotifBadge();
+  
+  // Instantly evaluate loss conditions
+  checkGameOver();
 }
 
 function updateHomeBudget() {

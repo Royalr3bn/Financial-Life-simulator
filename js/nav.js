@@ -228,4 +228,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ——— Initial UI render ———
   updateUI();
+  
+  // Put this at the very bottom of nav.js before the closing });
+  document.addEventListener('click', () => {
+    if (typeof checkGameOver === 'function') {
+      checkGameOver();
+    }
+  });
 });
