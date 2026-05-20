@@ -3,14 +3,64 @@
    Day advance, payday, stats, month end
    ═══════════════════════════════════════ */
 
-function endDay() {
+function endDay(chosenHours = 8) {
   if (GameState.gameOver) return;
 
+  // ——— Kingdom Come Style Time-lapse Wheel Animation ———
+  const overlay = document.getElementById('time-wheel-overlay');
+  const dial = document.getElementById('rotating-dial');
+  const counterText = document.getElementById('wheel-countdown-text');
+  
+  if (overlay && dial && counterText) {
+    overlay.style.display = 'flex';
+    
+    let hoursRemaining = chosenHours;
+    let currentRotation = 0;
+    counterText.textContent = `${hoursRemaining}h`;
+
+    // Simulated wheel tick interval loop
+    const tickInterval = setInterval(() => {
+      hoursRemaining--;
+      currentRotation += 180; // Alternates sun and moon positions
+      
+      dial.style.transform = `rotate(${currentRotation}deg)`;
+      counterText.textContent = `${hoursRemaining}h`;
+      
+      if (hoursRemaining <= 0) {
+        clearInterval(tickInterval);
+        overlay.style.display = 'none'; // Hide wheel when complete
+        
+        // Execute state logic calculations AFTER animation ends
+        finalizeDayCalculations(chosenHours);
+      }
+    }, 250); // Speed of each hour passing tick
+  } else {
+    // Fallback if overlay elements are missing
+    finalizeDayCalculations(chosenHours);
+  }
+}
+
+function finalizeDayCalculations(chosenHours) {
   GameState.day++;
 
-  // ——— Passive rest (basic night's sleep) ———
-  GameState.energy = clamp(GameState.energy + 10);
-  GameState.stress = clamp(GameState.stress - 2);
+  // ——— Variable Rest Calculations Based on Chosen Hours ———
+  if (chosenHours === 4) {
+    GameState.energy = clamp(GameState.energy + 15);
+    GameState.stress = clamp(GameState.stress + 5); // Tense rest increases stress
+    GameState.happiness = clamp(GameState.happiness - 5);
+    showNotification('Short rest! Minimal energy recovery, stress rising.', 'warning');
+  } else if (chosenHours === 12) {
+    GameState.energy = clamp(GameState.energy + 45);
+    GameState.stress = clamp(GameState.stress - 20); // Deep relaxation drops stress
+    GameState.happiness = clamp(GameState.happiness + 5);
+    showNotification('Deep sleep! Full recovery achieved.', 'success');
+  } else {
+    // Standard default 8 hours
+    GameState.energy = clamp(GameState.energy + 30);
+    GameState.stress = clamp(GameState.stress - 10);
+    GameState.happiness = clamp(GameState.happiness + 3);
+    showNotification('Slept well! Healthy baseline metrics recovered.', 'success');
+  }
 
   // ——— Month rollover ———
   if (GameState.day > GameState.daysInMonth) {
@@ -197,7 +247,6 @@ function checkGameOver() {
   }
 }
 
-// Custom Retro Pixel-Art Game Over Modal
 function showGameOverModal() {
   if (document.getElementById('game-over-modal')) return;
 
