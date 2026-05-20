@@ -90,6 +90,7 @@ const GameState = {
   notifications: [],
   impulseThisMonth: 0,
   groceryCount: 0,
+  workedToday: false,
 };
 
 const MONTH_NAMES = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];

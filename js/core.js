@@ -42,6 +42,12 @@ function endDay(chosenHours = 8) {
 
 function finalizeDayCalculations(chosenHours) {
   GameState.day++;
+  GameState.workedToday = false;
+
+  // Re-enable work buttons for new day
+  if (typeof window.enableWorkButtons === 'function') {
+    window.enableWorkButtons();
+  }
 
   // ——— Variable Rest Calculations Based on Chosen Hours ———
   if (chosenHours === 4) {

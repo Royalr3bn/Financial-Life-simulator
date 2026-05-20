@@ -180,7 +180,7 @@
 /*  Work actions  */
 .work-actions {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
 }
 
@@ -230,7 +230,23 @@
 
 .work-btn.go-work { border-color: var(--green-deep); }
 .work-btn.overtime { border-color: var(--gold-deep); }
+.work-btn.double { border-color: var(--red); }
 .work-btn.skip { border-color: var(--red-deep); }
+
+.work-btn.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.work-btn.disabled::after {
+  content: 'DONE FOR TODAY';
+  display: block;
+  font-family: var(--font-pixel);
+  font-size: 7px;
+  color: var(--ink-dim);
+  margin-top: 6px;
+  letter-spacing: 1px;
+}
 
 /*  Schedule  */
 .schedule-section {

@@ -28,23 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ——— END DAY button ———
+  // ——— END DAY button (Modified: Reads sleep dropdown value) ———
   const endDayBtn = document.querySelector('.end-day');
   if (endDayBtn) {
     endDayBtn.addEventListener('click', () => {
-      endDay();
-    });
-  }
-
-  // ——— SLEEP button (full rest + ends day) ———
-  const sleepBtn = document.querySelector('.sleep-btn');
-  if (sleepBtn) {
-    sleepBtn.addEventListener('click', () => {
-      GameState.energy = clamp(GameState.energy + 25);
-      GameState.stress = clamp(GameState.stress - 10);
-      GameState.happiness = clamp(GameState.happiness + 3);
-      showNotification('Slept well! +25 Energy, -10 Stress', 'success');
-      endDay();
+      const hoursSelect = document.getElementById('sleep-hours-select');
+      const hours = hoursSelect ? parseInt(hoursSelect.value) : 8;
+      endDay(hours);
     });
   }
 
@@ -55,9 +45,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     switch (text) {
       case 'SLEEP':
-        // Trigger the bottom bar sleep button
-        const sleepButton = document.querySelector('.sleep-btn');
-        if (sleepButton) sleepButton.click();
+        // Modified: Instead of a dummy click, grab the customized sleep hour choice directly
+        const hoursSelect = document.getElementById('sleep-hours-select');
+        const hours = hoursSelect ? parseInt(hoursSelect.value) : 8;
+        endDay(hours);
         break;
 
       case 'WORK':
@@ -97,13 +88,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // ——— Work action buttons (Job view) ———
   document.addEventListener('click', (e) => {
     const workBtn = e.target.closest('.work-btn');
-    if (!workBtn) return;
+    if (!workBtn || workBtn.classList.contains('disabled')) return;
 
     const title = workBtn.querySelector('.wb-title');
     if (!title) return;
 
     switch (title.textContent.trim()) {
+      case '8HR SHIFT':
       case 'GO TO WORK':
+        if (GameState.workedToday) {
+          showNotification('Already worked today!', 'warning');
+          return;
+        }
         if (GameState.energy < 15) {
           showNotification('Too tired to work!', 'warning');
           return;
@@ -112,11 +108,18 @@ document.addEventListener('DOMContentLoaded', () => {
         GameState.stress = clamp(GameState.stress + 5);
         GameState.job.performance = clamp(GameState.job.performance + 3);
         GameState.job.shiftsWorked++;
-        showNotification('Good shift! +Performance', 'success');
-        endDay();
+        GameState.workedToday = true;
+        showNotification('8hr shift done! +Performance', 'success');
+        disableWorkButtons();
+        updateUI();
         break;
 
+      case 'OVERTIME (12HR)':
       case 'OVERTIME':
+        if (GameState.workedToday) {
+          showNotification('Already worked today!', 'warning');
+          return;
+        }
         if (GameState.energy < 30) {
           showNotification('Not enough energy for overtime!', 'warning');
           return;
@@ -125,26 +128,64 @@ document.addEventListener('DOMContentLoaded', () => {
         GameState.stress = clamp(GameState.stress + 15);
         GameState.job.performance = clamp(GameState.job.performance + 6);
         GameState.job.shiftsWorked++;
-        GameState.balance += GameState.job.overtimeBonus;
-        showNotification(`Overtime done! +£${GameState.job.overtimeBonus} bonus`, 'success');
-        endDay();
+        GameState.balance += 39;
+        GameState.workedToday = true;
+        showNotification('12hr overtime done! +£39 bonus', 'success');
+        disableWorkButtons();
+        updateUI();
+        break;
+
+      case 'DOUBLE (16HR)':
+        if (GameState.workedToday) {
+          showNotification('Already worked today!', 'warning');
+          return;
+        }
+        if (GameState.energy < 50) {
+          showNotification('Not enough energy for a double! Need 50+', 'warning');
+          return;
+        }
+        GameState.energy = clamp(GameState.energy - 50);
+        GameState.stress = clamp(GameState.stress + 25);
+        GameState.happiness = clamp(GameState.happiness - 5);
+        GameState.job.performance = clamp(GameState.job.performance + 10);
+        GameState.job.shiftsWorked++;
+        GameState.balance += 78;
+        GameState.workedToday = true;
+        showNotification('16hr double shift survived! +£78 bonus', 'success');
+        disableWorkButtons();
+        updateUI();
         break;
 
       case 'SKIP SHIFT':
+        if (GameState.workedToday) {
+          showNotification('Already made a choice today!', 'warning');
+          return;
+        }
         GameState.energy = clamp(GameState.energy + 20);
         GameState.stress = clamp(GameState.stress - 10);
         GameState.job.performance = clamp(GameState.job.performance - 10);
         GameState.job.shiftsMissed++;
+        GameState.workedToday = true;
         if (GameState.job.shiftsMissed % 3 === 0) {
           GameState.job.warningCount++;
           showNotification(`⚠ WARNING ${GameState.job.warningCount}/3: Too many missed shifts!`, 'danger');
         } else {
           showNotification('Skipped work. +Energy but --Performance', 'warning');
         }
-        endDay();
+        disableWorkButtons();
+        updateUI();
         break;
     }
   });
+
+  // Disable/enable work buttons
+  function disableWorkButtons() {
+    document.querySelectorAll('.work-btn').forEach(btn => btn.classList.add('disabled'));
+  }
+  function enableWorkButtons() {
+    document.querySelectorAll('.work-btn').forEach(btn => btn.classList.remove('disabled'));
+  }
+  window.enableWorkButtons = enableWorkButtons;
 
   // ——— Bank transfer buttons ———
   document.addEventListener('click', (e) => {
@@ -229,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ——— Initial UI render ———
   updateUI();
   
-  // Put this at the very bottom of nav.js before the closing });
+  // Custom click check to instantly catch action effects (e.g. Overtime burnout)
   document.addEventListener('click', () => {
     if (typeof checkGameOver === 'function') {
       checkGameOver();
