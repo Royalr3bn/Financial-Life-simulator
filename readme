@@ -1,0 +1,91 @@
+🕹️ PENNY WISE — Player Manual & Onboarding Guide
+
+Welcome to Penny Wise, a retro inspired, client side personal finance life-simulation. In this game, your goal is to survive a high-risk contemporary economic landscape while balancing your financial health against your physical and mental well-being. Every single choice you make cascades through an interconnected architectural state machine.
+📊 Understanding the Display (HUD)
+
+The game screen is split into three core visual components designed to give you instant feedback on your choices:
+
+    The Chronological Tracker (Top Left): Displays the current Month and Day. Time stays frozen during the day, allowing you to plan your choices, and only advances when you manually use the END DAY control.
+
+    The Well Being Metric Bars (Top Center): These bars track your physical and psychological state, clamping strictly between 0 and 100:
+
+        💪 Energy: Expended by working; restored by eating and sleeping. If this drops too low, you cannot work.
+
+        🤯 Stress: Increases rapidly with grueling work hours; lowered by resting and relaxing.
+
+        😊 Happiness: Affected by your living conditions, working habits, and social habits.
+
+    The Wallet Display (Top Right): Shows your liquid, spendable cash balance in real time. It turns red when you slip into an overdraft.
+
+🛠️ Core Gameplay Loop & System Rules
+
+Your daily objective is to earn money, keep up with recurring bills, feed yourself, and manage stress.
+1. Navigating Actions & Managing Time
+
+You can switch between 6 specialized interface panels using the bottom navigation menu: Home, Bills, Shop, Job, Bank, and Stats.
+
+During the daytime, you can trigger individual quick actions on your sidebar dashboard:
+
+    EAT: Consumes one item from your grocery inventory. It restores +10 Energy and +3 Happiness. You cannot cook if your grocery count is at zero.
+
+    RELAX: Restores +10 Happiness and drains -8 Stress, but costs a minor -3 Energy deduction.
+
+2. Handling Shifts (The Career Dashboard)
+
+The career menu gives you daily choices on how to spend your labor energy:
+
+    8HR SHIFT / GO TO WORK: Your standard daily routine. Drains -15 Energy, increases +5 Stress, and pushes your job performance up by +3%.
+
+    DOUBLE SHIFT (16HR): A grueling high-risk, high-reward option. It awards you a significant overtime cash bonus and a massive +10% Performance boost, but it drains a punishing -50 Energy and spikes stress by +25.
+
+    SKIP SHIFT: Gives you a quick physical break (+20 Energy, -10 Stress), but cuts your career performance rating by -10% and tracks a missed attendance flag on your employment file.
+
+⚠️ The Double-Shift Rest Penalty: Working a 16-hour double shift takes a major physical toll on your body. Because of the intense muscle tension and stress built up from a double shift, your sleep capacity will be physically restricted during the subsequent night cycle. Even if you select an 8 or 12-hour rest, your character will suffer a sudden burnout wake-up, cutting your sleep down to a broken 4-hour max rest cycle.
+3. Ending the Day & Processing Sleep
+
+Once you have completed your daytime tasks and your work buttons are greyed out, you must head to the night cycle interface, select your target sleep layout duration using the dropdown menu (4 Hours, 8 Hours, or 12 Hours), and hit END DAY.
+
+    12 Hours (Deep Rest): Restores +80 Energy and cuts -30 Stress. Note: You cannot schedule back-to-back double shifts immediately after a 12-hour rest cycle.
+
+    8 Hours (Standard Rest): Restores +50 Energy and cuts -15 Stress.
+
+    4 Hours (Light Rest / Forced Double Shift Penalty): Only recovers a minor +20 Energy and drops stress by a tiny -5.
+
+When you go to sleep, the calendar shifts forward to the next morning, your daily choice tokens refresh, and your work buttons unlock again.
+💸 Financial Survival & Hidden Traps
+🏢 The Bill Matrix & Subscription Traps
+
+Your recurring costs (Rent, Streamflix, Gym Membership) are tracked inside the Bills View. Every item lists a specific due date.
+
+    Manual Payments: You can select individual bill entries and click PAY to clear them early.
+
+    Autopay Toggles: Toggling a bill's autopay switch to ON allows the system machine to automatically process and deduct the cash balance on the exact due date.
+
+    Subscription Cancellations: You can completely terminate discretionary subscription entries (like gym or entertainment packages) to lower your fixed monthly costs, but watch out—losing access to your leisure services may impact your baseline happiness score over time.
+
+🚨 Late Fees, Overdrafts, and Month Rollovers
+
+Time marches forward toward Day 30. When the day counter rolls over to Day 1 of the new month, two major automated actions trigger simultaneously:
+
+    Your base career salary is calculated and deposited into your liquid wallet balance.
+
+    Any unpaid bills currently past their calendar due dates will hit your account with immediate late fee penalties.
+
+If your wallet dips below £0, you enter a dangerous debt zone. While you can still navigate the interface, the bank will charge you a punitive £5 daily overdraft fee for every single day you remain in the negative.
+💀 How to Lose (Game-Over Conditions)
+
+The simulation runs continuous structural check sweeps to ensure you are balancing your lifestyle parameters. You will hit an immediate Game-Over overlay screen if you hit any of these three failure thresholds:
+
+    💸 Systemic Bankruptcy: If your account balance falls below -£500, your credit lines collapse completely, and you enter systemic foreclosure.
+
+    🧠 Physiological Burnout: If your Energy level falls to 0 while your Stress rating hits 100 simultaneously, your body collapses from overexertion.
+
+    🚪 Career Termination: If you skip work too often and accumulate 3 corporate warnings on your employment profile, you are instantly fired, leaving you with zero income paths.
+
+🏆 Pro-Tips for Success
+
+    Build an Emergency Fund: Use the Bank View to transfer money out of your current account and into your savings account early in the month. Savings balances are protected and cannot be drained by accidental impulse buys or basic automated billing loops.
+
+    Watch Your Supplies: Keep an eye on your inventory count. Buying cheap, essential groceries at the shop and eating home-cooked meals is much more cost-effective than burning money on luxury impulse purchases when your energy runs out.
+
+    Manage Your Alerts: Check the small red notification badge on your Bills navigation tab. If it shows an active count, it means a bill is overdue or due immediately. Pay it off before the daily overdraft interest or late fees drain your hard-earned wages!
