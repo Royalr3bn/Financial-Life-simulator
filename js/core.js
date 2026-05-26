@@ -18,50 +18,61 @@ function endDay(chosenHours = 8) {
     let currentRotation = 0;
     counterText.textContent = `${hoursRemaining}h`;
 
-    // Simulated wheel tick interval loop
     const tickInterval = setInterval(() => {
       hoursRemaining--;
-      currentRotation += 180; // Alternates sun and moon positions
+      currentRotation += 180;
       
       dial.style.transform = `rotate(${currentRotation}deg)`;
       counterText.textContent = `${hoursRemaining}h`;
       
       if (hoursRemaining <= 0) {
         clearInterval(tickInterval);
-        overlay.style.display = 'none'; // Hide wheel when complete
-        
-        // Execute state logic calculations AFTER animation ends
+        overlay.style.display = 'none';
         finalizeDayCalculations(chosenHours);
       }
-    }, 250); // Speed of each hour passing tick
+    }, 250);
   } else {
-    // Fallback if overlay elements are missing
     finalizeDayCalculations(chosenHours);
   }
 }
 
 function finalizeDayCalculations(chosenHours) {
+  // Calculate current weekday index index before advancing (0 = Mon, 4 = Fri, 5-6 = Weekend)
+  const currentWeekdayIndex = (GameState.day - 1) % 7;
+
+  // PASSIVE MISSED SHIFT TRACKING:
+  // If today is Mon-Fri and the player did NOT work today or click skip shift
+  if (currentWeekdayIndex < 5 && !GameState.workedToday) {
+    GameState.job.shiftsMissed++;
+    GameState.job.performance = clamp(GameState.job.performance - 15);
+    
+    // Every unexcused absence triggers an immediate warning increment
+    GameState.job.warningCount++;
+    showNotification(`No-show! You missed your shift. Warning ${GameState.job.warningCount}/3!`, 'danger');
+  }
+
   GameState.day++;
   GameState.workedToday = false;
 
-  // Re-enable work buttons for new day
   if (typeof window.enableWorkButtons === 'function') {
     window.enableWorkButtons();
   }
 
   // ——— Variable Rest Calculations Based on Chosen Hours ———
   if (chosenHours === 4) {
+    GameState.slept12Hours = false;
     GameState.energy = clamp(GameState.energy + 15);
-    GameState.stress = clamp(GameState.stress + 5); // Tense rest increases stress
+    GameState.stress = clamp(GameState.stress + 5); 
     GameState.happiness = clamp(GameState.happiness - 5);
     showNotification('Short rest! Minimal energy recovery, stress rising.', 'warning');
   } else if (chosenHours === 12) {
+    GameState.slept12Hours = true;
     GameState.energy = clamp(GameState.energy + 45);
-    GameState.stress = clamp(GameState.stress - 20); // Deep relaxation drops stress
+    GameState.stress = clamp(GameState.stress - 20); 
     GameState.happiness = clamp(GameState.happiness + 5);
     showNotification('Deep sleep! Full recovery achieved.', 'success');
   } else {
-    // Standard default 8 hours
+    GameState.slept12Hours = false;
     GameState.energy = clamp(GameState.energy + 30);
     GameState.stress = clamp(GameState.stress - 10);
     GameState.happiness = clamp(GameState.happiness + 3);
@@ -122,46 +133,34 @@ function finalizeDayCalculations(chosenHours) {
   }
 
   // ——— Daily stat changes ———
-  // Energy slowly drains
   GameState.energy = clamp(GameState.energy - 5);
 
-  // Hunger effect — if no groceries bought recently, energy drains faster
   if (GameState.groceryCount === 0 && GameState.day > 7) {
     GameState.energy = clamp(GameState.energy - 5);
     GameState.happiness = clamp(GameState.happiness - 2);
   }
 
-  // Stress slowly decays (recovery)
   GameState.stress = clamp(GameState.stress - 2);
 
-  // Low energy = stress goes up
   if (GameState.energy < 20) {
     GameState.stress = clamp(GameState.stress + 5);
   }
 
-  // High stress = happiness drops
   if (GameState.stress > 80) {
     GameState.happiness = clamp(GameState.happiness - 3);
   }
 
-  // Low balance anxiety
   if (GameState.balance < 100) {
     GameState.stress = clamp(GameState.stress + 3);
     GameState.happiness = clamp(GameState.happiness - 2);
   }
 
-  // ——— Job review countdown ———
   GameState.job.reviewIn--;
-
-  // ——— Game over checks ———
   checkGameOver();
-
-  // ——— Update the UI ———
   updateUI();
 }
 
 function endMonth() {
-  // Record monthly history
   const monthName = MONTH_NAMES[GameState.month];
   const savedThisMonth = GameState.spending.savings;
   GameState.monthlyHistory.push({
@@ -170,53 +169,32 @@ function endMonth() {
     saved: savedThisMonth,
   });
 
-  // Interest on savings
   const monthlyInterest = Math.round((GameState.savings * GameState.savingsInterestRate) / 12);
   if (monthlyInterest > 0) {
     GameState.savings += monthlyInterest;
     showNotification(`Savings interest: +£${monthlyInterest}`, 'success');
   }
 
-  // Check monthly achievements
   checkMonthlyAchievements();
-
   showNotification(`End of ${monthName} — check your stats!`, 'info');
 }
 
 function startMonth() {
-  // Reset bills to unpaid for new month
-  GameState.bills.forEach(bill => {
-    bill.paid = false;
-  });
-
-  // Reset monthly tracking
-  GameState.spending = {
-    rent: 0,
-    groceries: 0,
-    utilities: 0,
-    subscriptions: 0,
-    impulse: 0,
-    savings: 0,
-  };
+  GameState.bills.forEach(bill => { bill.paid = false; });
+  GameState.spending = { rent: 0, groceries: 0, utilities: 0, subscriptions: 0, impulse: 0, savings: 0 };
   GameState.lateFees = {};
   GameState.impulseThisMonth = 0;
   GameState.groceryCount = 0;
-
   showNotification(`Welcome to ${MONTH_NAMES[GameState.month]} ${GameState.year}!`, 'info');
 }
 
 function trackSpending(bill) {
-  if (bill.type === 'HOUSING') {
-    GameState.spending.rent += bill.amount;
-  } else if (bill.type === 'UTILITY') {
-    GameState.spending.utilities += bill.amount;
-  } else if (bill.type === 'SUB') {
-    GameState.spending.subscriptions += bill.amount;
-  }
+  if (bill.type === 'HOUSING') GameState.spending.rent += bill.amount;
+  else if (bill.type === 'UTILITY') GameState.spending.utilities += bill.amount;
+  else if (bill.type === 'SUB') GameState.spending.subscriptions += bill.amount;
 }
 
 function checkGameOver() {
-  // 1. Stress Burnout Check (Highest Priority)
   if (GameState.stress >= 100) {
     GameState.gameOver = true;
     GameState.gameOverReason = "Complete Burnout! Your stress levels hit 100% and you couldn't handle the pressure.";
@@ -224,8 +202,6 @@ function checkGameOver() {
     showGameOverModal();
     return;
   }
-
-  // 2. Debt Crisis Check
   if (GameState.debt > 500) {
     GameState.gameOver = true;
     GameState.gameOverReason = "Debt spiralled out of control. You couldn't keep up with payments.";
@@ -233,8 +209,6 @@ function checkGameOver() {
     showGameOverModal();
     return;
   }
-
-  // 3. Fired Check
   if (GameState.job.warningCount >= 3) {
     GameState.gameOver = true;
     GameState.gameOverReason = "You were fired for missing too many shifts. No income means no way to pay bills.";
@@ -242,8 +216,6 @@ function checkGameOver() {
     showGameOverModal();
     return;
   }
-
-  // 4. All Stats Bottomed Out
   if (GameState.happiness <= 0 && GameState.energy <= 0) {
     GameState.gameOver = true;
     GameState.gameOverReason = "Complete burnout. Your health and happiness hit rock bottom.";
@@ -259,61 +231,45 @@ function showGameOverModal() {
   const modal = document.createElement('div');
   modal.id = 'game-over-modal';
   modal.style.position = 'absolute';
-  modal.style.top = '0';
-  modal.style.left = '0';
-  modal.style.width = '100%';
-  modal.style.height = '100%';
+  modal.style.top = '0'; modal.style.left = '0';
+  modal.style.width = '100%'; modal.style.height = '100%';
   modal.style.backgroundColor = 'rgba(10, 6, 19, 0.9)'; 
-  modal.style.display = 'flex';
-  modal.style.justifyContent = 'center';
-  modal.style.alignItems = 'center';
+  modal.style.display = 'flex'; modal.style.justifyContent = 'center'; modal.style.alignItems = 'center';
   modal.style.zIndex = '9999';
 
   const content = document.createElement('div');
   content.style.background = 'var(--panel)';
   content.style.border = '4px solid var(--red)';
-  content.style.padding = '30px';
-  content.style.width = '440px';
-  content.style.textAlign = 'center';
+  content.style.padding = '30px'; content.style.width = '440px'; content.style.textAlign = 'center';
   content.style.boxShadow = '0 0 20px rgba(0,0,0,0.8), inset -4px -4px 0 rgba(0,0,0,0.4)';
 
   const title = document.createElement('h2');
   title.textContent = '★ GAME OVER ★';
-  title.style.fontFamily = 'var(--font-pixel)';
-  title.style.fontSize = '16px';
-  title.style.color = 'var(--red)';
-  title.style.marginBottom = '20px';
+  title.style.fontFamily = 'var(--font-pixel)'; title.style.fontSize = '16px'; title.style.color = 'var(--red)'; title.style.marginBottom = '20px';
 
   const reason = document.createElement('p');
   reason.textContent = GameState.gameOverReason;
-  reason.style.fontFamily = 'var(--font-body)';
-  reason.style.fontSize = '24px';
-  reason.style.color = 'var(--ink)';
-  reason.style.marginBottom = '30px';
+  reason.style.fontFamily = 'var(--font-body)'; reason.style.fontSize = '24px'; reason.style.color = 'var(--ink)'; reason.style.marginBottom = '30px';
 
   const restartBtn = document.createElement('button');
   restartBtn.textContent = 'RESTART ↻';
-  restartBtn.style.fontFamily = 'var(--font-pixel)';
-  restartBtn.style.fontSize = '10px';
-  restartBtn.style.padding = '12px 24px';
+  restartBtn.style.fontFamily = 'var(--font-pixel)'; restartBtn.style.fontSize = '10px'; restartBtn.style.padding = '12px 24px';
   restartBtn.style.background = 'linear-gradient(180deg, var(--green) 0%, var(--green-deep) 100%)';
-  restartBtn.style.color = 'var(--ink)';
-  restartBtn.style.border = '3px solid var(--panel-edge)';
-  restartBtn.style.cursor = 'pointer';
+  restartBtn.style.color = 'var(--ink)'; restartBtn.style.border = '3px solid var(--panel-edge)'; restartBtn.style.cursor = 'pointer';
 
-  restartBtn.onclick = () => {
-    window.location.reload();
-  };
+  restartBtn.onclick = () => { window.location.reload(); };
 
-  content.appendChild(title);
-  content.appendChild(reason);
-  content.appendChild(restartBtn);
+  content.appendChild(title); content.appendChild(reason); content.appendChild(restartBtn);
   modal.appendChild(content);
 
   const screenEl = document.querySelector('.screen');
-  if (screenEl) {
-    screenEl.appendChild(modal);
-  } else {
-    document.body.appendChild(modal);
+  if (screenEl) screenEl.appendChild(modal);
+  else document.body.appendChild(modal);
+}
+
+function checkMonthlyAchievements() {
+  if (GameState.impulseThisMonth === 0 && !GameState.achievements.noImpulse.unlocked) {
+    GameState.achievements.noImpulse.unlocked = true;
+    showNotification('🏆 Achievement: No Impulse Month!', 'success');
   }
 }

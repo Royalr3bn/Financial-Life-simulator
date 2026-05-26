@@ -32,36 +32,131 @@ function updateUI() {
   if (energyBar) energyBar.style.width = `${GameState.energy}%`;
   if (stressBar) stressBar.style.width = `${GameState.stress}%`;
 
-  // Home sidebar budget
-  updateHomeBudget();
+  // ——— Job view performance updates ———
+  const jobTitleCard = document.querySelector('.job-details .job-title');
+  const jobCompanyCard = document.querySelector('.job-details .job-company');
+  const jobSalaryCard = document.querySelector('.job-salary .sal-amount');
+  const careerSalaryRow = document.querySelector('#view-job .sidebar .panel .budget-row.income .val');
+  const warningBannerText = document.querySelector('.job-warning .jw-text');
+  const warningBanner = document.querySelector('.job-warning');
+  const performanceBarFill = document.querySelector('.perf-bar > span');
+  const performanceRatingBadge = document.querySelector('.perf-rating');
 
-  // Bills view
-  updateBillsView();
-
-  // Shop cart
-  updateCartView();
-
-  // Bank view
-  updateBankView();
-
-  // Speech bubble
-  updateBubble();
-
-  //  Notification badge
-  updateNotifBadge();
+  if (jobTitleCard) jobTitleCard.textContent = GameState.job.title.toUpperCase();
+  if (jobCompanyCard) jobCompanyCard.textContent = GameState.job.company;
+  if (jobSalaryCard) jobSalaryCard.textContent = `£ ${GameState.salary.toLocaleString()}`;
+  if (careerSalaryRow) careerSalaryRow.textContent = `£${GameState.salary.toLocaleString()}`;
   
-  // Instantly evaluate loss conditions
+  if (performanceBarFill) performanceBarFill.style.width = `${GameState.job.performance}%`;
+  
+  if (performanceRatingBadge) {
+    if (GameState.job.performance >= 75) {
+      performanceRatingBadge.textContent = 'GOOD';
+      performanceRatingBadge.className = 'perf-rating good';
+    } else if (GameState.job.performance >= 40) {
+      performanceRatingBadge.textContent = 'AVERAGE';
+      performanceRatingBadge.className = 'perf-rating average';
+    } else {
+      performanceRatingBadge.textContent = 'POOR';
+      performanceRatingBadge.className = 'perf-rating poor';
+    }
+  }
+
+  // Handle active written warnings tracking
+  if (warningBanner && warningBannerText) {
+    if (GameState.job.warningCount > 0) {
+      warningBanner.style.display = 'flex';
+      warningBannerText.textContent = `WARNING: You have missed ${GameState.job.shiftsMissed} shift(s). Current status: ${GameState.job.warningCount}/3 warnings issued!`;
+    } else {
+      warningBanner.style.display = 'none';
+    }
+  }
+
+  // Update counter cards
+  const shiftsWorkedValue = document.querySelector('.perf-stat.good .ps-value');
+  const shiftsMissedValue = document.querySelector('.perf-stat.warn .ps-value');
+  if (shiftsWorkedValue) shiftsWorkedValue.textContent = GameState.job.shiftsWorked;
+  if (shiftsMissedValue) shiftsMissedValue.textContent = GameState.job.shiftsMissed;
+
+  updateHomeBudget();
+  updateBillsView();
+  updateCartView();
+  updateBankView();
+  updateWeeklySchedule();
+  updateJobBoardRequirements();
+  updateBubble();
+  updateNotifBadge();
   checkGameOver();
+}
+
+function updateJobBoardRequirements() {
+  // Dynamically update met/unmet checkmarks on job listings based on current performance
+  const listings = document.querySelectorAll('.job-listing');
+  listings.forEach(listing => {
+    const titleEl = listing.querySelector('.jl-title');
+    if (!titleEl) return;
+    
+    if (titleEl.textContent.trim() === '💻 JUNIOR DEVELOPER') {
+      const perfReqEl = listing.querySelector('.jl-reqs .jl-req:nth-child(2)');
+      if (perfReqEl) {
+        if (GameState.job.performance >= 75) {
+          perfReqEl.textContent = '✓ PERF. ABOVE 75%';
+          perfReqEl.className = 'jl-req met';
+        } else {
+          perfReqEl.textContent = '✗ PERF. ABOVE 75%';
+          perfReqEl.className = 'jl-req unmet';
+        }
+      }
+    }
+  });
+}
+
+function updateWeeklySchedule() {
+  const scheduleGrid = document.querySelector('.schedule-grid');
+  if (!scheduleGrid) return;
+
+  const daysOfWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+  const currentWeekStart = Math.floor((GameState.day - 1) / 7) * 7 + 1;
+
+  let html = '';
+  daysOfWeek.forEach((day, index) => {
+    const targetDayNumber = currentWeekStart + index;
+    let status = '—';
+    let dayClass = 'off';
+
+    if (index < 5) {
+      dayClass = 'work';
+      if (GameState.workedDays.includes(targetDayNumber)) {
+        status = '✓';
+      } else if (targetDayNumber < GameState.day) {
+        status = '✗';
+        dayClass = 'missed';
+      } else if (targetDayNumber === GameState.day) {
+        status = '?';
+        dayClass = 'work today';
+      } else {
+        status = '?';
+      }
+    } else {
+      status = 'OFF';
+    }
+
+    html += `
+      <div class="sched-day ${dayClass}">
+        <div class="sd-name">${day}</div>
+        <div class="sd-status">${status}</div>
+      </div>
+    `;
+  });
+
+  scheduleGrid.innerHTML = html;
 }
 
 function updateHomeBudget() {
   const panel = document.querySelector('#view-home .panel');
   if (!panel) return;
 
-  const totalBills = GameState.bills
-    .filter(b => !b.paid)
-    .reduce((sum, b) => sum + b.amount, 0);
-
+  const totalBills = GameState.bills.filter(b => !b.paid).reduce((sum, b) => sum + b.amount, 0);
   const groceryEstimate = 240;
   const savingsTarget = 150;
 
@@ -69,14 +164,13 @@ function updateHomeBudget() {
     <div class="budget-row income"><span class="lbl">Salary</span><span class="val">+${GameState.salary}</span></div>
     <div class="budget-row expense"><span class="lbl">Rent</span><span class="val">-850</span></div>
     <div class="budget-row expense"><span class="lbl">Groceries</span><span class="val">-${groceryEstimate}</span></div>
-    <div class="budget-row expense"><span class="lbl">Utilities</span><span class="val">-${totalBills - 850}</span></div>
+    <div class="budget-row expense"><span class="lbl">Utilities</span><span class="val" style="color: var(--ink)">-${totalBills}</span></div>
     <div class="budget-row expense"><span class="lbl">Subs</span><span class="val">-${GameState.bills.filter(b => b.type === 'SUB' && !b.paid).reduce((s, b) => s + b.amount, 0)}</span></div>
     <div class="budget-row save"><span class="lbl">Savings</span><span class="val">+${savingsTarget}</span></div>
   `;
 }
 
 function updateBillsView() {
-  // Summary cards
   const overdueBills = GameState.bills.filter(b => !b.paid && b.dueDay < GameState.day);
   const upcomingBills = GameState.bills.filter(b => !b.paid && b.dueDay >= GameState.day);
   const paidBills = GameState.bills.filter(b => b.paid);
@@ -86,7 +180,6 @@ function updateBillsView() {
   const paidTotal = paidBills.reduce((s, b) => s + b.amount, 0);
   const monthTotal = GameState.bills.reduce((s, b) => s + b.amount, 0);
 
-  // Update summary cards
   const summaryVals = document.querySelectorAll('#view-bills .sum-card .val');
   if (summaryVals.length >= 4) {
     summaryVals[0].textContent = `£ ${overdueTotal}`;
@@ -95,27 +188,22 @@ function updateBillsView() {
     summaryVals[3].textContent = `£ ${monthTotal}`;
   }
 
-  // Update pay-all button
   const payAllBtn = document.querySelector('.pay-all');
   const unpaidTotal = GameState.bills.filter(b => !b.paid).reduce((s, b) => s + b.amount, 0);
   if (payAllBtn) payAllBtn.innerHTML = `PAY ALL<br>£ ${unpaidTotal}`;
 
-  // Rebuild bills list
   const billsList = document.querySelector('.bills-list');
   if (!billsList) return;
 
   let html = '';
-
-  // Overdue
   if (overdueBills.length > 0) {
     html += '<div class="section-label">▶ OVERDUE ◀</div>';
     overdueBills.forEach(bill => {
       const daysLate = GameState.day - bill.dueDay;
-      html += buildBillCard(bill, -daysLate, true);
+      html += buildBillCard(bill, daysLate, true);
     });
   }
 
-  // Upcoming
   if (upcomingBills.length > 0) {
     html += '<div class="section-label upcoming">▶ UPCOMING ◀</div>';
     upcomingBills.forEach(bill => {
@@ -124,7 +212,6 @@ function updateBillsView() {
     });
   }
 
-  // Paid
   if (paidBills.length > 0) {
     html += '<div class="section-label paid">▶ PAID ◀</div>';
     paidBills.forEach(bill => {
@@ -141,12 +228,11 @@ function updateBillsView() {
       `;
     });
   }
-
   billsList.innerHTML = html;
 }
 
 function buildBillCard(bill, days, isOverdue) {
-  const daysText = isOverdue ? `${days} DAYS` : `${days} DAYS`;
+  const daysText = `${days} DAYS`;
   const daysClass = isOverdue ? '' : (days <= 3 ? 'warn-days' : '');
   const cancelBtn = bill.cancellable ? `<button class="btn-cancel" data-bill="${bill.id}">CANCEL</button>` : '';
 
@@ -176,7 +262,6 @@ function updateCartView() {
 
   if (!cartItemsEl) return;
 
-  // Cart items
   if (GameState.cart.length === 0) {
     cartItemsEl.innerHTML = '<div style="text-align:center; color: var(--ink-dim); font-size: 14px; padding: 10px;">Cart is empty</div>';
   } else {
@@ -189,14 +274,12 @@ function updateCartView() {
     `).join('');
   }
 
-  // Count
   if (cartCountEl) cartCountEl.textContent = GameState.cart.length;
 
-  // Totals
   const essentialTotal = GameState.cart.filter(i => i.category === 'essential').reduce((s, i) => s + i.price, 0);
   const impulseTotal = GameState.cart.filter(i => i.category === 'impulse').reduce((s, i) => s + i.price, 0);
   const otherTotal = GameState.cart.filter(i => i.category !== 'essential' && i.category !== 'impulse').reduce((s, i) => s + i.price, 0);
-  const cartTotal = GameState.cart.reduce((s, i) => s + i.price, 0);
+  const cartTotal = GameState.cart.reduce((sum, item) => sum + item.price, 0);
 
   if (cartTotalsEl) {
     cartTotalsEl.innerHTML = `
@@ -207,7 +290,6 @@ function updateCartView() {
     `;
   }
 
-  // Budget impact
   const unpaidBills = GameState.bills.filter(b => !b.paid).reduce((s, b) => s + b.amount, 0);
   const leftOver = GameState.balance - cartTotal - unpaidBills;
 
@@ -220,7 +302,6 @@ function updateCartView() {
     `;
   }
 
-  // Checkout button
   if (checkoutBtn) {
     checkoutBtn.textContent = `CHECKOUT — £ ${cartTotal}`;
     checkoutBtn.disabled = GameState.cart.length === 0;
@@ -228,20 +309,23 @@ function updateCartView() {
 }
 
 function updateBankView() {
-  // Current account
   const currentBal = document.querySelector('.account-card.current .acc-balance');
   const savingsBal = document.querySelector('.account-card.savings .acc-balance');
 
   if (currentBal) currentBal.textContent = `£ ${GameState.balance.toLocaleString()}`;
   if (savingsBal) savingsBal.textContent = `£ ${GameState.savings.toLocaleString()}`;
 
-  // Transfer boxes
   const fromBox = document.querySelector('.transfer-box:first-child .tb-balance');
   const toBox = document.querySelector('.transfer-controls .transfer-box:last-child .tb-balance');
-  if (fromBox) fromBox.textContent = `£ ${GameState.balance.toLocaleString()}`;
-  if (toBox) toBox.textContent = `£ ${GameState.savings.toLocaleString()}`;
+  
+  if (GameState.transferDirection === 'to_savings') {
+    if (fromBox) fromBox.textContent = `£ ${GameState.balance.toLocaleString()}`;
+    if (toBox) toBox.textContent = `£ ${GameState.savings.toLocaleString()}`;
+  } else {
+    if (fromBox) fromBox.textContent = `£ ${GameState.savings.toLocaleString()}`;
+    if (toBox) toBox.textContent = `£ ${GameState.balance.toLocaleString()}`;
+  }
 
-  // Net worth
   const netWorth = GameState.balance + GameState.savings - GameState.debt;
   const summaryRows = document.querySelectorAll('#view-bank .sidebar .budget-row .val');
   if (summaryRows.length >= 4) {
@@ -251,7 +335,6 @@ function updateBankView() {
     summaryRows[3].textContent = `£${GameState.debt}`;
   }
 
-  // Savings goal bars
   const emergencyBar = document.querySelector('.goal-bar.emergency > span');
   const emergencyPct = document.querySelector('.goal-card:nth-child(2) .gf-pct');
   const emergencyAmounts = document.querySelector('.goal-card:nth-child(2) .goal-amounts');
@@ -267,26 +350,19 @@ function updateBubble() {
   const bubble = document.querySelector('.bubble');
   if (!bubble) return;
 
-  // Find most urgent thing to say
   const overdueBills = GameState.bills.filter(b => !b.paid && b.dueDay < GameState.day);
   const soonBills = GameState.bills.filter(b => !b.paid && b.dueDay >= GameState.day && (b.dueDay - GameState.day) <= 3);
 
-  if (GameState.energy < 20) {
-    bubble.textContent = "I'M EXHAUSTED...";
-  } else if (overdueBills.length > 0) {
-    bubble.textContent = `${overdueBills[0].name.toUpperCase()} IS OVERDUE!`;
-  } else if (soonBills.length > 0) {
+  if (GameState.energy < 20) bubble.textContent = "I'M EXHAUSTED...";
+  else if (overdueBills.length > 0) bubble.textContent = `${overdueBills[0].name.toUpperCase()} IS OVERDUE!`;
+  else if (soonBills.length > 0) {
     const days = soonBills[0].dueDay - GameState.day;
     bubble.textContent = `${soonBills[0].name.toUpperCase()} DUE IN ${days} DAY${days > 1 ? 'S' : ''}!`;
-  } else if (GameState.stress > 80) {
-    bubble.textContent = "SO STRESSED...";
-  } else if (GameState.happiness > 80) {
-    bubble.textContent = "LIFE IS GOOD!";
-  } else if (GameState.balance < 200) {
-    bubble.textContent = "MONEY IS TIGHT...";
-  } else {
-    bubble.textContent = "WHAT SHOULD I DO TODAY?";
   }
+  else if (GameState.stress > 80) bubble.textContent = "SO STRESSED...";
+  else if (GameState.happiness > 80) bubble.textContent = "LIFE IS GOOD!";
+  else if (GameState.balance < 200) bubble.textContent = "MONEY IS TIGHT...";
+  else bubble.textContent = "WHAT SHOULD I DO TODAY?";
 }
 
 function updateNotifBadge() {
@@ -305,14 +381,5 @@ function updateNotifBadge() {
   }
 }
 
-// Helper to clamp values between 0-100
-function clamp(val, min = 0, max = 100) {
-  return Math.max(min, Math.min(max, val));
-}
-
-// Helper to show a temporary notification
-function showNotification(text, type = 'info') {
-  GameState.notifications.push({ text, type, time: Date.now() });
-  // TODO: render notification popup
-  console.log(`[${type.toUpperCase()}] ${text}`);
-}
+function clamp(val, min = 0, max = 100) { return Math.max(min, Math.min(max, val)); }
+function showNotification(text, type = 'info') { console.log(`[${type.toUpperCase()}] ${text}`); }

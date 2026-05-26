@@ -47,120 +47,62 @@
 - [x] END DAY button
 - [x] Tab switching between Home and Bills views via `nav.js`
 
+### Core Core Screen Layouts (Added via State Mapping Updates)
+- [x] Created `css/shop.css` and built `#view-shop` layout container rules
+- [x] Created `css/job.css` and built `#view-job` interactive career panel row matrices
+- [x] Created `css/bank.css` and built `#view-bank` transfer splits and goal tracking meters
+- [x] Created `css/stats.css` and built `#view-stats` visual status overview meters
+
+### Central State Game Logic
+- [x] END DAY button successfully steps forward current calendar tracking arrays
+- [x] Automated system rollover handles month progression steps (Day 30 → Day 1)
+- [x] Payday intervals safely compute and deposit monthly salary into current wallet balance
+- [x] Automated system billing scripts execute automatic bill processing sweeps on designated due dates
+- [x] System tracking triggers rigid daily overdraft penalties if core currency falls below zero thresholds
+- [x] Autopay toggle parameters intercept billing queues to automatically pay statements on time
+- [x] Condition checks correctly balance wellbeing parameters (Sleep → +Energy, Work → -Energy / +Stress)
+- [x] Marketplace loops evaluate cost properties to alter account limits and calculate biological yields
+- [x] Script limits enforce work boundaries, rendering career warning metrics or job loss alerts
+- [x] Implemented instant game-over routines tracking structural bankruptcy and physiological burnout
+
+### UI & Bug Adjustments
+- [x] Repositioned screen scanline overlay z-index parameters to restore mouse selection routines
+- [x] Verified local server file load ordering matrices to secure initialization data flows
+- [x] Synchronized active display nodes so wallet counters and status bars update immediately on event fires
+- [x] Programmed active view switching completely across all 6 menu layout partitions
+
 ---
 
 ## 🔧 NEEDS FIXING
-- [ ] Scanline overlay z-index blocking clicks (change `z-index: 50` → `5` in `layout.css`)
-- [ ] Verify Live Server loads all CSS/JS correctly
-- [ ] Test tab switching works between Home ↔ Bills
+- [ ] Refine micro-balancing parameters (ensure game progression limits are neither too simple nor overly punishing)
 
 ---
 
-## 🔲 TO BUILD — Screens
+## 🔲 TO BUILD — Post-Deadline Polish & Future Milestones
+*(Deferred to manage scope creep and protect strict dissertation submission parameters)*
 
-### Shop / Groceries View
-- [ ] Create `css/shop.css`
-- [ ] Add `#view-shop` section to `index.html`
-- [ ] Grocery items with prices (essentials vs luxuries)
-- [ ] Impulse buy temptations (takeaway, gadgets, clothes)
-- [ ] Cart / spending tracker
-- [ ] Budget impact preview ("if you buy this, you'll have £X left")
-- [ ] Cheap vs premium choices (own-brand vs branded)
+### Visual & Audio Polish
+- [ ] Replace temporary asset placeholders with dedicated standalone pixel art character sprite assets
+- [ ] Upgrade asset furniture objects to complex modular retro tile sheets
+- [ ] Implement audio synthesizers to render vintage chiptune events (coin drops, warning rings, click sounds)
+- [ ] Add smooth screen filter transitions during multi-tab view switching executions
 
-### Job View
-- [ ] Create `css/job.css`
-- [ ] Add `#view-job` section to `index.html`
-- [ ] Current job details (title, salary, shift schedule)
-- [ ] Work action (go to work / skip work)
-- [ ] Performance meter — skip too much = job loss
-- [ ] Overtime option (more money, more stress, less happiness)
-- [ ] Job board — apply for better/worse paying jobs
+### Dynamic Event Logic
+- [ ] Inject randomized systemic micro-events (unforeseen mechanic bills, emergency pricing hikes, windfall tax refunds)
 
-### Bank / Savings View
-- [ ] Create `css/bank.css`
-- [ ] Add `#view-bank` section to `index.html`
-- [ ] Account overview (current balance, savings balance)
-- [ ] Transfer money to/from savings
-- [ ] Savings goals (emergency fund, holiday, etc.)
-- [ ] Savings progress bars
-- [ ] Interest earned display
-- [ ] Debt / overdraft warning if balance goes negative
-
-### Stats / Dashboard View
-- [ ] Create `css/stats.css`
-- [ ] Add `#view-stats` section to `index.html`
-- [ ] Monthly spending breakdown (visual chart)
-- [ ] Income vs expenses comparison
-- [ ] Savings trend over time
-- [ ] Financial health score
-- [ ] Tips / achievements panel
+### Native Handheld Package Delivery
+- [ ] Wrap responsive frontend files into a native mobile Progressive Web App (PWA) container for internet-free train commuting usage
 
 ---
 
-## 🔲 TO BUILD — Game Logic
-
-### Core Game Loop
-- [ ] END DAY button advances day counter
-- [ ] Month rollover (day 30 → next month, day 1)
-- [ ] Payday — salary added to balance on set day
-- [ ] Auto-deduct bills on their due dates
-- [ ] Late fee penalty for overdue bills
-- [ ] Autopay logic (if toggled on, auto-deduct on due date)
-
-### Wellbeing System
-- [ ] Stats change based on actions (sleep → +energy, work → -energy +stress)
-- [ ] Eating → costs money, restores energy/happiness
-- [ ] Relaxing → +happiness, -stress (but costs time)
-- [ ] Low energy → can't work
-- [ ] High stress → happiness drops faster
-- [ ] Consequences — burnout (all stats low), job loss, debt spiral
-
-### Financial Logic
-- [ ] Pay individual bills (deduct from balance, mark as paid)
-- [ ] Pay all bills button
-- [ ] Cancel subscription (removes bill, may affect happiness)
-- [ ] Grocery spending (essential vs luxury choices)
-- [ ] Impulse purchases
-- [ ] Overdraft / debt accumulation if balance < 0
-- [ ] Savings interest calculation
-
-### Random Events
-- [ ] Emergency expenses (car repair, medical bill, appliance breaks)
-- [ ] Unexpected income (tax refund, gift, bonus)
-- [ ] Rent increase notification
-- [ ] Subscription price hike
-- [ ] Sale / discount opportunities
-
-### UI Updates
-- [ ] Wallet balance updates live when paying bills/buying
-- [ ] Stat bars animate when values change
-- [ ] Notification badge count updates dynamically
-- [ ] Speech bubble changes based on game events
-- [ ] Day/month display updates from game state
-
----
-
-## 🔲 TO BUILD — Polish & Dissertation
-
-### Visual Polish
-- [ ] Pixel art sprites for character (replace CSS shapes)
-- [ ] Furniture sprite upgrades
-- [ ] Screen transition animations between views
-- [ ] Sound effects (coin clink, button press, alert)
-- [ ] Victory / failure end screens
-
-### Educational Features
-- [ ] Financial tips that rotate based on player behaviour
-- [ ] End-of-month summary report (how did you do?)
-- [ ] Achievement system (e.g. "Saved 3 months in a row")
-- [ ] Tutorial / onboarding for first-time players
-
-### Dissertation Support
-- [ ] Document all design decisions
-- [ ] Screenshot each screen for write-up
-- [ ] Record gameplay demo video
-- [ ] User testing with target demographic
-- [ ] Collect feedback data for analysis chapter
+## 📝 DISSERTATION SUPPORT (CURRENT PROGRESS)
+- [x] Document project setup, architectural foundations, and project management scope tracking methodologies
+- [x] Finish Section 1: Introduction chapter body
+- [x] Finish Section 2: Literature Review academic comparisons
+- [x] Finish Section 3: Project Management backlog summaries
+- [ ] Complete Section 4: Software Design system structure maps
+- [ ] Complete Section 5: Evaluation performance test reviews
+- [ ] Complete Section 6: Reflection structural conclusions
 
 ---
 

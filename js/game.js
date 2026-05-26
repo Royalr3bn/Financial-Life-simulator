@@ -18,6 +18,7 @@ const GameState = {
   day: 14,
   daysInMonth: 30,
   payday: 1,
+  workedDays: [1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13], // Track historical days worked
 
   // ——— Wellbeing (0–100) ———
   happiness: 72,
@@ -91,6 +92,8 @@ const GameState = {
   impulseThisMonth: 0,
   groceryCount: 0,
   workedToday: false,
+  slept12Hours: false,
+  transferDirection: 'to_savings',
 };
 
 const MONTH_NAMES = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
