@@ -1,0 +1,322 @@
+/* ═══════════════════════════════════════
+   PENNY WISE — Bank View
+   Accounts, savings goals, transfers, debt
+   ═══════════════════════════════════════ */
+
+/* ——— Bank view layout ——— */
+#view-bank {
+  grid-template-columns: 1fr 260px;
+  grid-template-rows: 1fr;
+}
+
+/* ——— Bank main area ——— */
+.bank-main {
+  padding: 14px 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.bank-main::-webkit-scrollbar { width: 12px; }
+.bank-main::-webkit-scrollbar-track {
+  background: var(--shadow);
+  border: 2px solid var(--panel-edge);
+}
+.bank-main::-webkit-scrollbar-thumb {
+  background: var(--panel-light);
+  border: 2px solid var(--panel-edge);
+}
+
+/* ——— Account cards ——— */
+.accounts-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.account-card {
+  background: var(--panel);
+  border: 3px solid var(--panel-edge);
+  padding: 14px;
+  box-shadow: inset -2px -2px 0 rgba(0,0,0,0.4), inset 2px 2px 0 rgba(255,255,255,0.1);
+}
+.account-card.current { border-color: var(--blue-deep); }
+.account-card.savings { border-color: var(--gold-deep); }
+.account-card.debt { border-color: var(--red); }
+
+.acc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.acc-header .acc-ico {
+  width: 36px; height: 36px;
+  display: grid;
+  place-items: center;
+  background: var(--bg-0);
+  border: 2px solid var(--panel-edge);
+  font-size: 22px;
+}
+.acc-header .acc-type {
+  font-family: var(--font-pixel);
+  font-size: 8px;
+  color: var(--ink-dim);
+  letter-spacing: 1px;
+}
+
+.acc-balance {
+  font-family: var(--font-pixel);
+  font-size: 20px;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.account-card.current .acc-balance { color: var(--blue); }
+.account-card.savings .acc-balance { color: var(--gold); }
+.account-card.debt .acc-balance { color: var(--red); }
+
+.acc-detail {
+  font-size: 15px;
+  color: var(--ink-dim);
+  line-height: 1.4;
+}
+.acc-detail .hl { color: var(--green); }
+.acc-detail .warn { color: var(--orange); }
+
+/* ——— Transfer section ——— */
+.transfer-section {
+  background: var(--panel);
+  border: 3px solid var(--panel-edge);
+  padding: 14px;
+  box-shadow: inset -2px -2px 0 rgba(0,0,0,0.4), inset 2px 2px 0 rgba(255,255,255,0.1);
+}
+
+.transfer-title {
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.transfer-controls {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.transfer-box {
+  background: var(--bg-0);
+  border: 2px solid var(--panel-edge);
+  padding: 10px;
+  text-align: center;
+}
+.transfer-box .tb-label {
+  font-family: var(--font-pixel);
+  font-size: 7px;
+  color: var(--ink-dim);
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.transfer-box .tb-balance {
+  font-family: var(--font-pixel);
+  font-size: 12px;
+  color: var(--ink);
+}
+
+.transfer-arrow {
+  font-size: 28px;
+  color: var(--gold);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.transfer-arrow .arrow-btn {
+  width: 36px; height: 28px;
+  background: var(--panel-light);
+  border: 2px solid var(--panel-edge);
+  color: var(--ink);
+  font-size: 18px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.transfer-arrow .arrow-btn:hover { background: var(--gold); color: var(--bg-0); }
+
+.transfer-amounts {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+.amt-btn {
+  font-family: var(--font-pixel);
+  font-size: 8px;
+  padding: 6px 12px;
+  background: var(--panel-light);
+  color: var(--ink);
+  border: 2px solid var(--panel-edge);
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+.amt-btn:hover { background: var(--gold); color: var(--bg-0); }
+.amt-btn:active { transform: translate(1px,1px); }
+.amt-btn.selected { background: var(--gold); color: var(--bg-0); }
+
+.btn-transfer {
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  padding: 12px;
+  width: 100%;
+  background: linear-gradient(180deg, var(--blue) 0%, var(--blue-deep) 100%);
+  color: var(--ink);
+  border: 3px solid var(--panel-edge);
+  cursor: pointer;
+  letter-spacing: 2px;
+  margin-top: 10px;
+  box-shadow: inset -2px -2px 0 rgba(0,0,0,0.3), inset 2px 2px 0 rgba(255,255,255,0.3);
+}
+.btn-transfer:hover {
+  background: linear-gradient(180deg, var(--gold) 0%, var(--gold-deep) 100%);
+  color: var(--bg-0);
+}
+.btn-transfer:active { transform: translate(1px,1px); }
+
+/* ——— Savings goals ——— */
+.goals-title {
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  padding: 6px 0 4px;
+  border-bottom: 2px dashed var(--panel-light);
+  margin-bottom: 8px;
+}
+
+.goal-card {
+  background: var(--panel);
+  border: 3px solid var(--panel-edge);
+  padding: 12px;
+  box-shadow: inset -2px -2px 0 rgba(0,0,0,0.4), inset 2px 2px 0 rgba(255,255,255,0.1);
+  margin-bottom: 8px;
+}
+.goal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.goal-header .goal-ico { font-size: 22px; }
+.goal-header .goal-name {
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  color: var(--ink);
+  letter-spacing: 1px;
+  flex: 1;
+  margin-left: 8px;
+}
+.goal-header .goal-amounts {
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  color: var(--gold);
+  text-align: right;
+}
+
+.goal-bar {
+  height: 14px;
+  background: var(--shadow);
+  border: 2px solid var(--panel-edge);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+.goal-bar > span {
+  display: block;
+  height: 100%;
+  box-shadow: inset 0 -3px 0 rgba(0,0,0,0.3), inset 0 2px 0 rgba(255,255,255,0.2);
+  transition: width 0.4s;
+}
+.goal-bar.emergency > span { background: var(--red); }
+.goal-bar.holiday > span { background: var(--blue); }
+.goal-bar.tech > span { background: var(--gold); }
+
+.goal-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--ink-dim);
+}
+.goal-footer .gf-pct {
+  font-family: var(--font-pixel);
+  font-size: 8px;
+}
+
+/* ——— Overdraft warning ——— */
+.overdraft-warning {
+  background: var(--red-deep);
+  border: 3px solid var(--red);
+  padding: 12px;
+  display: none;
+  align-items: center;
+  gap: 10px;
+}
+.overdraft-warning.active { display: flex; }
+.overdraft-warning .ow-ico { font-size: 28px; }
+.overdraft-warning .ow-text {
+  font-size: 15px;
+  color: var(--ink);
+  line-height: 1.4;
+}
+.overdraft-warning .ow-text .hl {
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  color: var(--gold);
+}
+
+/* ——— Transaction history ——— */
+.transactions-title {
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  padding: 6px 0 4px;
+  border-bottom: 2px dashed var(--panel-light);
+  margin-bottom: 8px;
+}
+
+.transaction {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px dotted var(--panel-light);
+}
+.transaction:last-child { border-bottom: none; }
+
+.tx-ico {
+  width: 28px; height: 28px;
+  display: grid;
+  place-items: center;
+  background: var(--bg-0);
+  border: 2px solid var(--panel-edge);
+  font-size: 16px;
+}
+.tx-info .tx-name {
+  font-size: 16px;
+  color: var(--ink);
+}
+.tx-info .tx-date {
+  font-size: 13px;
+  color: var(--ink-dim);
+}
+.tx-amount {
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  text-align: right;
+}
+.tx-amount.income { color: var(--green); }
+.tx-amount.expense { color: var(--red); }
+.tx-amount.transfer { color: var(--blue); }

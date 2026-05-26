@@ -1,0 +1,140 @@
+/* ═══════════════════════════════════════
+   PENNY WISE — Reusable Components
+   Buttons, panels, sidebar, shared widgets
+   ═══════════════════════════════════════ */
+
+/* ——— Sidebar ——— */
+.sidebar {
+  background: linear-gradient(180deg, #241635 0%, #1a0f28 100%);
+  border-left: 3px solid var(--panel-edge);
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 10;
+  overflow-y: auto;
+}
+
+.sb-title {
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  color: var(--gold);
+  letter-spacing: 1px;
+  text-align: center;
+  padding: 6px;
+  border-bottom: 2px dashed var(--panel-light);
+}
+
+/* ——— Panels ——— */
+.panel {
+  background: var(--panel);
+  border: 3px solid var(--panel-edge);
+  padding: 10px;
+  box-shadow: inset -2px -2px 0 rgba(0,0,0,0.4), inset 2px 2px 0 rgba(255,255,255,0.1);
+}
+
+/* ——— Budget rows ——— */
+.budget-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  padding: 3px 0;
+  border-bottom: 1px dotted var(--panel-light);
+}
+.budget-row:last-child { border-bottom: none; }
+.budget-row .lbl { color: var(--ink-dim); }
+.budget-row .val { color: var(--ink); }
+.budget-row.income .val { color: var(--green); }
+.budget-row.expense .val { color: var(--red); }
+.budget-row.save .val { color: var(--gold); }
+
+/* ——— Buttons ——— */
+.btn {
+  font-family: var(--font-pixel);
+  font-size: 8px;
+  padding: 10px 6px;
+  background: var(--panel-light);
+  color: var(--ink);
+  border: 3px solid var(--panel-edge);
+  box-shadow: inset -2px -2px 0 rgba(0,0,0,0.4), inset 2px 2px 0 rgba(255,255,255,0.15);
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-align: center;
+  line-height: 1.6;
+}
+.btn:hover {
+  background: var(--gold);
+  color: var(--bg-0);
+}
+.btn:active {
+  box-shadow: inset 2px 2px 0 rgba(0,0,0,0.4);
+  transform: translate(1px, 1px);
+}
+
+.btn-pay {
+  font-family: var(--font-pixel);
+  font-size: 7px;
+  padding: 6px 10px;
+  border: 2px solid var(--panel-edge);
+  cursor: pointer;
+  letter-spacing: 1px;
+  background: linear-gradient(180deg, var(--green) 0%, var(--green-deep) 100%);
+  color: var(--bg-0);
+  box-shadow: inset -2px -2px 0 rgba(0,0,0,0.3), inset 2px 2px 0 rgba(255,255,255,0.3);
+}
+.btn-pay:hover {
+  background: linear-gradient(180deg, var(--gold) 0%, var(--gold-deep) 100%);
+}
+.btn-pay:active { transform: translate(1px,1px); }
+
+.btn-cancel {
+  font-family: var(--font-pixel);
+  font-size: 7px;
+  padding: 6px 10px;
+  border: 2px solid var(--panel-edge);
+  cursor: pointer;
+  letter-spacing: 1px;
+  background: var(--panel-light);
+  color: var(--ink-dim);
+  box-shadow: inset -2px -2px 0 rgba(0,0,0,0.3);
+}
+.btn-cancel:hover { background: var(--red); color: var(--ink); }
+
+/* ——— Toggle switches ——— */
+.toggle {
+  width: 36px; height: 18px;
+  background: var(--shadow);
+  border: 2px solid var(--panel-edge);
+  position: relative;
+  cursor: pointer;
+}
+.toggle::after {
+  content: '';
+  position: absolute;
+  top: 1px; left: 1px;
+  width: 12px; height: 12px;
+  background: var(--ink-dim);
+  transition: all 0.2s;
+}
+.toggle.on { background: var(--green-deep); }
+.toggle.on::after { left: 19px; background: var(--green); }
+
+/* ——— Section labels ——— */
+.section-label {
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  padding: 6px 0 4px;
+  border-bottom: 2px dashed var(--panel-light);
+  margin-bottom: 4px;
+}
+.section-label.upcoming { color: var(--orange); }
+.section-label.paid { color: var(--green); }
+
+/* ——— Quick action grid ——— */
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}

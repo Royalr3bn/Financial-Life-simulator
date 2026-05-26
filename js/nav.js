@@ -36,134 +36,141 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ═══════════════════════════════════════════════════════════
-  // UNIFIED INTERACTION HANDLER (Prevents Double-Execution Bugs)
-  // ═══════════════════════════════════════════════════════════
   document.addEventListener('click', (e) => {
-    // 1. Handle Standalone UI Buttons (.btn)
-    if (e.target.classList.contains('btn')) {
-      const text = e.target.textContent.trim();
+    if (!e.target.classList.contains('btn')) return;
+    const text = e.target.textContent.trim();
 
-      switch (text) {
-        case 'SLEEP':
-          const hoursSelect = document.getElementById('sleep-hours-select');
-          const hours = hoursSelect ? parseInt(hoursSelect.value) : 8;
-          endDay(hours);
-          break;
+    switch (text) {
+      case 'SLEEP':
+        const hoursSelect = document.getElementById('sleep-hours-select');
+        const hours = hoursSelect ? parseInt(hoursSelect.value) : 8;
+        endDay(hours);
+        break;
 
-        case 'EAT':
-          if (GameState.groceryCount > 0) {
-            GameState.energy = clamp(GameState.energy + 10);
-            GameState.happiness = clamp(GameState.happiness + 3);
-            showNotification('Ate a home-cooked meal. +Energy +Happy', 'success');
-          } else {
-            showNotification('No groceries! Go to the shop first.', 'warning');
-          }
-          updateUI();
-          break;
+      case 'WORK':
+        if (GameState.workedToday) {
+          showNotification('Already worked today!', 'warning');
+          return;
+        }
+        if (GameState.energy < 15) {
+          showNotification('Too tired to work! Get some rest.', 'warning');
+          return;
+        }
+        if (!GameState.workedDays.includes(GameState.day)) GameState.workedDays.push(GameState.day);
+        GameState.energy = clamp(GameState.energy - 15);
+        GameState.stress = clamp(GameState.stress + 5);
+        GameState.job.performance = clamp(GameState.job.performance + 3);
+        GameState.job.shiftsWorked++;
+        GameState.workedToday = true;
+        showNotification('Worked a shift. +Performance -Energy', 'info');
+        disableWorkButtons();
+        updateUI();
+        break;
 
-        case 'RELAX':
-          GameState.happiness = clamp(GameState.happiness + 10);
-          GameState.stress = clamp(GameState.stress - 8);
-          GameState.energy = clamp(GameState.energy - 3);
-          showNotification('Relaxed at home. +Happy -Stress', 'success');
-          updateUI();
-          break;
-      }
-      return; // Stop processing to prevent cascading into career triggers
-    }
+      case 'EAT':
+        if (GameState.groceryCount > 0) {
+          GameState.energy = clamp(GameState.energy + 10);
+          GameState.happiness = clamp(GameState.happiness + 3);
+          showNotification('Ate a home-cooked meal. +Energy +Happy', 'success');
+        } else {
+          showNotification('No groceries! Go to the shop first.', 'warning');
+        }
+        updateUI();
+        break;
 
-    // 2. Handle Career Shift Buttons (.work-btn)
-    const workBtn = e.target.closest('.work-btn');
-    if (workBtn) {
-      // Prevent interactions if the HTML property or class indicates a block
-      if (workBtn.disabled || workBtn.classList.contains('disabled') || GameState.workedToday) {
-        return;
-      }
-
-      const titleEl = workBtn.querySelector('.wb-title');
-      if (!titleEl) return;
-      const titleText = titleEl.textContent.trim();
-
-      switch (titleText) {
-        case '8HR SHIFT':
-        case 'GO TO WORK':
-        case 'WORK':
-          if (GameState.energy < 15) {
-            showNotification('Too tired to work! Get some rest.', 'warning');
-            return;
-          }
-          if (!GameState.workedDays.includes(GameState.day)) GameState.workedDays.push(GameState.day);
-          GameState.energy = clamp(GameState.energy - 15);
-          GameState.stress = clamp(GameState.stress + 5);
-          GameState.job.performance = clamp(GameState.job.performance + 3);
-          GameState.job.shiftsWorked++;
-          GameState.workedToday = true;
-          showNotification('8hr shift done! +Performance', 'success');
-          disableWorkButtons();
-          updateUI();
-          break;
-
-        case 'DOUBLE (16HR)':
-        case 'DOUBLE SHIFT':
-          if (GameState.slept12Hours) {
-            showNotification('Cannot do a double shift after sleeping 12 hours!', 'warning');
-            return;
-          }
-          if (GameState.energy < 50) {
-            showNotification('Not enough energy for a double! Need 50+', 'warning');
-            return;
-          }
-          if (!GameState.workedDays.includes(GameState.day)) GameState.workedDays.push(GameState.day);
-          GameState.energy = clamp(GameState.energy - 50);
-          GameState.stress = clamp(GameState.stress + 25);
-          GameState.happiness = clamp(GameState.happiness - 5);
-          GameState.job.performance = clamp(GameState.job.performance + 10);
-          GameState.job.shiftsWorked += 2;
-          GameState.balance += (GameState.job.overtimeBonus * 2);
-          GameState.workedToday = true;
-          showNotification('16hr double shift survived!', 'success');
-          disableWorkButtons();
-          updateUI();
-          break;
-
-        case 'SKIP SHIFT':
-          GameState.energy = clamp(GameState.energy + 20);
-          GameState.stress = clamp(GameState.stress - 10);
-          GameState.job.performance = clamp(GameState.job.performance - 10);
-          GameState.job.shiftsMissed++;
-          GameState.workedToday = true;
-          if (GameState.job.shiftsMissed % 3 === 0) {
-            GameState.job.warningCount++;
-            showNotification(`⚠ WARNING ${GameState.job.warningCount}/3: Too many missed shifts!`, 'danger');
-          } else {
-            showNotification('Skipped work. +Energy but --Performance', 'warning');
-          }
-          disableWorkButtons();
-          updateUI();
-          break;
-      }
+      case 'RELAX':
+        GameState.happiness = clamp(GameState.happiness + 10);
+        GameState.stress = clamp(GameState.stress - 8);
+        GameState.energy = clamp(GameState.energy - 3);
+        showNotification('Relaxed at home. +Happy -Stress', 'success');
+        updateUI();
+        break;
     }
   });
 
-  // ═══════════════════════════════════════════════════════════
-  // REFACTORED INTERFACE HOOKS (Ensures Hard Disabling & Gray-out)
-  // ═══════════════════════════════════════════════════════════
-  function disableWorkButtons() { 
-    document.querySelectorAll('.work-btn').forEach(btn => {
-      btn.classList.add('disabled');
-      btn.disabled = true; // Programmatically blocks pointer actions
-      btn.style.pointerEvents = 'none'; // Safe-guard CSS intercept rule
-    }); 
-  }
-  
-  function enableWorkButtons() { 
-    document.querySelectorAll('.work-btn').forEach(btn => {
-      btn.classList.remove('disabled');
-      btn.disabled = false; // Restores hardware listeners
-      btn.style.pointerEvents = 'auto'; // Restores click capabilities
-    }); 
-  }
+  document.addEventListener('click', (e) => {
+    const workBtn = e.target.closest('.work-btn');
+    if (!workBtn || workBtn.classList.contains('disabled')) return;
+
+    const title = workBtn.querySelector('.wb-title');
+    if (!title) return;
+
+    switch (title.textContent.trim()) {
+      case '8HR SHIFT':
+      case 'GO TO WORK':
+        if (GameState.workedToday) {
+          showNotification('Already worked today!', 'warning');
+          return;
+        }
+        if (GameState.energy < 15) {
+          showNotification('Too tired to work!', 'warning');
+          return;
+        }
+        if (!GameState.workedDays.includes(GameState.day)) GameState.workedDays.push(GameState.day);
+        GameState.energy = clamp(GameState.energy - 15);
+        GameState.stress = clamp(GameState.stress + 5);
+        GameState.job.performance = clamp(GameState.job.performance + 3);
+        GameState.job.shiftsWorked++;
+        GameState.workedToday = true;
+        showNotification('8hr shift done! +Performance', 'success');
+        disableWorkButtons();
+        updateUI();
+        endDay(8);
+        break;
+
+      case 'DOUBLE (16HR)':
+      case 'DOUBLE SHIFT':
+        if (GameState.slept12Hours) {
+          showNotification('Cannot do a double shift after sleeping 12 hours!', 'warning');
+          return;
+        }
+        if (GameState.workedToday) {
+          showNotification('Already worked today!', 'warning');
+          return;
+        }
+        if (GameState.energy < 50) {
+          showNotification('Not enough energy for a double! Need 50+', 'warning');
+          return;
+        }
+        if (!GameState.workedDays.includes(GameState.day)) GameState.workedDays.push(GameState.day);
+        GameState.energy = clamp(GameState.energy - 50);
+        GameState.stress = clamp(GameState.stress + 25);
+        GameState.happiness = clamp(GameState.happiness - 5);
+        GameState.job.performance = clamp(GameState.job.performance + 10);
+        GameState.job.shiftsWorked += 2;
+        GameState.balance += (GameState.job.overtimeBonus * 2);
+        GameState.workedToday = true;
+        showNotification('16hr double shift survived!', 'success');
+        disableWorkButtons();
+        updateUI();
+        endDay(12);
+        break;
+
+      case 'SKIP SHIFT':
+        if (GameState.workedToday) {
+          showNotification('Already made a choice today!', 'warning');
+          return;
+        }
+        GameState.energy = clamp(GameState.energy + 20);
+        GameState.stress = clamp(GameState.stress - 10);
+        GameState.job.performance = clamp(GameState.job.performance - 10);
+        GameState.job.shiftsMissed++;
+        GameState.workedToday = true;
+        if (GameState.job.shiftsMissed % 3 === 0) {
+          GameState.job.warningCount++;
+          showNotification(`⚠ WARNING ${GameState.job.warningCount}/3: Too many missed shifts!`, 'danger');
+        } else {
+          showNotification('Skipped work. +Energy but --Performance', 'warning');
+        }
+        disableWorkButtons();
+        updateUI();
+        endDay(8);
+        break;
+    }
+  });
+
+  function disableWorkButtons() { document.querySelectorAll('.work-btn').forEach(btn => btn.classList.add('disabled')); }
+  function enableWorkButtons() { document.querySelectorAll('.work-btn').forEach(btn => btn.classList.remove('disabled')); }
   window.enableWorkButtons = enableWorkButtons;
 
   // ——— Job Application Handler with Dynamic Retro Popups ———

@@ -1,0 +1,37 @@
+/* ═══════════════════════════════════════
+   PENNY WISE — Design Tokens
+   All colours, fonts, and shared values
+   ═══════════════════════════════════════ */
+
+:root {
+  /* Backgrounds */
+  --bg-0: #1a1428;
+  --bg-1: #2d1b3d;
+
+  /* Panels */
+  --panel: #3b2a52;
+  --panel-light: #4d3968;
+  --panel-edge: #18101f;
+
+  /* Text */
+  --ink: #f4e7d4;
+  --ink-dim: #c9b8a0;
+
+  /* Accent colours */
+  --gold: #f9c74f;
+  --gold-deep: #c78a1b;
+  --coin: #ffd966;
+  --green: #90be6d;
+  --green-deep: #4f8a3d;
+  --red: #e63946;
+  --red-deep: #a1172a;
+  --blue: #6fb3e0;
+  --blue-deep: #2a6f97;
+  --pink: #ef8fb7;
+  --orange: #f3a261;
+  --shadow: #0a0613;
+
+  /* Fonts */
+  --font-body: 'VT323', monospace;
+  --font-pixel: 'Press Start 2P', monospace;
+}
