@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showNotification('8hr shift done! +Performance', 'success');
         disableWorkButtons();
         updateUI();
-        endDay(8);
+        // endDay(8);
         break;
 
       case 'DOUBLE (16HR)':
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showNotification('16hr double shift survived!', 'success');
         disableWorkButtons();
         updateUI();
-        endDay(12);
+        // endDay(12);
         break;
 
       case 'SKIP SHIFT':
@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         disableWorkButtons();
         updateUI();
-        endDay(8);
+        // endDay(8);
         break;
     }
   });

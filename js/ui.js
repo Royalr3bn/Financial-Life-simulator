@@ -32,7 +32,7 @@ function updateUI() {
   if (energyBar) energyBar.style.width = `${GameState.energy}%`;
   if (stressBar) stressBar.style.width = `${GameState.stress}%`;
 
-  // ——— Job view performance updates ———
+  //  Job view performance updates 
   const jobTitleCard = document.querySelector('.job-details .job-title');
   const jobCompanyCard = document.querySelector('.job-details .job-company');
   const jobSalaryCard = document.querySelector('.job-salary .sal-amount');
