@@ -1,7 +1,7 @@
-/* ═══════════════════════════════════════
+/* 
    PENNY WISE — Shop Logic
    Cart management, checkout, stat effects
-   ═══════════════════════════════════════ */
+    */
 
 const SHOP_ITEMS = [
   { id: 'bread',    name: 'Bread & Basics',   price: 12, icon: '🍞', category: 'essential', effects: { energy: 5 } },
@@ -19,6 +19,7 @@ const SHOP_ITEMS = [
 ];
 
 function addToCart(itemId) {
+  // Add the selected shop item to the shopping cart state.
   const item = SHOP_ITEMS.find(i => i.id === itemId);
   if (!item) return;
 
@@ -33,6 +34,7 @@ function removeFromCart(index) {
 }
 
 function checkout() {
+  // Process the cart checkout, apply item effects, and update spending totals.
   if (GameState.cart.length === 0) return;
   const total = GameState.cart.reduce((sum, item) => sum + item.price, 0);
 

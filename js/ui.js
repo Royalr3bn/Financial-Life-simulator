@@ -1,9 +1,10 @@
-/* ═══════════════════════════════════════
+/* 
    PENNY WISE — UI Updater
    Syncs HTML elements with GameState
-   ═══════════════════════════════════════ */
+    */
 
 function updateUI() {
+  // Main UI sync: update the dashboard, status bars, and panel views from GameState.
   // Top bar
   const monthLabel = document.querySelector('.date-badge .month');
   const dayLabel = document.querySelector('.date-badge .day');
@@ -112,6 +113,7 @@ function updateJobBoardRequirements() {
 }
 
 function updateWeeklySchedule() {
+  // Build the weekly schedule view using the current game day and working history.
   const scheduleGrid = document.querySelector('.schedule-grid');
   if (!scheduleGrid) return;
 
@@ -254,6 +256,7 @@ function buildBillCard(bill, days, isOverdue) {
 }
 
 function updateCartView() {
+  // Refresh the shopping cart view and calculate spending impacts.
   const cartItemsEl = document.querySelector('.cart-items');
   const cartCountEl = document.querySelector('.cart-count');
   const cartTotalsEl = document.querySelector('.cart-totals');

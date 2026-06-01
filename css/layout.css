@@ -1,7 +1,7 @@
-/* ═══════════════════════════════════════
+/* 
    PENNY WISE — Layout
    Screen frame, topbar, bottombar, grid
-   ═══════════════════════════════════════ */
+    */
 
 * { box-sizing: border-box; margin: 0; padding: 0; image-rendering: pixelated; }
 html, body { height: 100%; }

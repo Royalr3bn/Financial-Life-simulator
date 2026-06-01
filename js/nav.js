@@ -1,7 +1,7 @@
-/* ═══════════════════════════════════════
+/* 
    PENNY WISE — Navigation & Actions
    Tab switching, END DAY, quick actions
-   ═══════════════════════════════════════ */
+    */
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log('Penny Wise loaded');
@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Wire up the end-day button so the player can advance the clock after choosing rest.
   const endDayBtn = document.querySelector('.end-day');
   if (endDayBtn) {
     endDayBtn.addEventListener('click', () => {
@@ -36,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Global click handler for the main action buttons in the home view.
   document.addEventListener('click', (e) => {
     if (!e.target.classList.contains('btn')) return;
     const text = e.target.textContent.trim();
@@ -88,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Click handler for the work action cards in the jobs panel.
   document.addEventListener('click', (e) => {
     const workBtn = e.target.closest('.work-btn');
     if (!workBtn || workBtn.classList.contains('disabled')) return;
@@ -174,6 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.enableWorkButtons = enableWorkButtons;
 
   // ——— Job Application Handler with Dynamic Retro Popups ———
+  // Handle clicks on job application buttons and display feedback modals.
   document.addEventListener('click', (e) => {
     if (!e.target.classList.contains('btn-apply')) return;
     const listing = e.target.closest('.job-listing');
@@ -276,6 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
     else document.body.appendChild(modal);
   }
 
+  // Handle selection and transfer of preset savings amounts in the banking view.
   document.addEventListener('click', (e) => {
     if (e.target.classList.contains('amt-btn')) {
       document.querySelectorAll('.amt-btn').forEach(b => b.classList.remove('selected'));
@@ -320,6 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Toggle autopay settings for bills directly from the bank/bills interface.
   document.addEventListener('click', (e) => {
     if (e.target.classList.contains('toggle')) {
       e.target.classList.toggle('on');

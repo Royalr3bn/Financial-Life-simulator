@@ -1,12 +1,14 @@
-/* ═══════════════════════════════════════
+/* 
    PENNY WISE — Bills Logic
    Pay, cancel, autopay, late fees
-   ═══════════════════════════════════════ */
+    */
 
 function payBill(billId) {
+  // Locate the selected bill and skip if it is already paid or does not exist.
   const bill = GameState.bills.find(b => b.id === billId);
   if (!bill || bill.paid) return;
 
+  // Include any accumulated late fees for this bill when calculating the full payment.
   const totalOwed = bill.amount + (GameState.lateFees[billId] || 0);
 
   if (GameState.balance < totalOwed) {
@@ -24,12 +26,14 @@ function payBill(billId) {
     showNotification(`Paid ${bill.name}: £${bill.amount}`, 'success');
   }
 
+  // Record this payment in the monthly spending tracker and reduce stress.
   trackSpending(bill);
   GameState.stress = clamp(GameState.stress - 5);
   updateUI();
 }
 
 function payAllBills() {
+  // Gather all remaining unpaid bills and calculate the total amount due.
   const unpaid = GameState.bills.filter(b => !b.paid);
   let totalNeeded = 0;
 
@@ -58,6 +62,7 @@ function payAllBills() {
 }
 
 function cancelSubscription(billId) {
+  // Remove the cancellable subscription from the active bill list.
   const bill = GameState.bills.find(b => b.id === billId);
   if (!bill || !bill.cancellable) return;
 

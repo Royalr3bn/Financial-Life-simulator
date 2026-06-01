@@ -1,7 +1,7 @@
-/* ═══════════════════════════════════════
+/* 
    PENNY WISE — Game State
    Single source of truth for all data
-   ═══════════════════════════════════════ */
+    */
 
 const GameState = {
   // ——— Finances ———

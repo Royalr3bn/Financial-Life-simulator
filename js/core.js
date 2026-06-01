@@ -1,7 +1,7 @@
-/* ═══════════════════════════════════════
+/* 
    PENNY WISE — Core Game Loop
    Day advance, payday, stats, month end
-   ═══════════════════════════════════════ */
+    */
 
 function endDay(chosenHours = 8) {
   if (GameState.gameOver) return;
@@ -37,7 +37,8 @@ function endDay(chosenHours = 8) {
 }
 
 function finalizeDayCalculations(chosenHours) {
-  // Calculate current weekday index index before advancing (0 = Mon, 4 = Fri, 5-6 = Weekend)
+  // Perform end-of-day bookkeeping after the player has taken their action or skipped ahead.
+  // Calculate current weekday index before advancing (0 = Mon, 4 = Fri, 5-6 = Weekend).
   const currentWeekdayIndex = (GameState.day - 1) % 7;
 
   // PASSIVE MISSED SHIFT TRACKING:
@@ -98,6 +99,7 @@ function finalizeDayCalculations(chosenHours) {
   }
 
   // ——— Autopay bills ———
+  // Automatically pay bills that are configured for autopay when they are due.
   GameState.bills.forEach(bill => {
     if (!bill.paid && bill.autopay && bill.dueDay === GameState.day) {
       if (GameState.balance >= bill.amount) {
@@ -112,6 +114,7 @@ function finalizeDayCalculations(chosenHours) {
   });
 
   // ——— Late fees ———
+  // Charge fees for each unpaid past-due bill and increase stress.
   GameState.bills.forEach(bill => {
     if (!bill.paid && bill.dueDay < GameState.day) {
       const lateFee = 5;
